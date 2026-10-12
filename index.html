@@ -245,6 +245,17 @@ footer#composer{background:#000;border-top:1px solid var(--ig-line);padding:10px
 .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(255,255,255,.06) 50%,transparent 60%);transform:translateX(-100%);animation:shine 4s ease-in-out infinite}
 @keyframes shine{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 @media (prefers-reduced-motion:reduce){.cover::after{animation:none}}
+
+/* ===== Kenar çubuğu düzeni ===== */
+#friends{padding:6px 6px}
+#friends .item{display:flex;align-items:center;gap:12px;padding:10px;min-width:0}
+#friends .item>div{flex:1;min-width:0}
+#friends .item .av{width:48px;height:48px;flex-shrink:0}
+#friends .fname{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#friends .fsub{font-size:12px;color:#a8a8a8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+#friends .dots-btn{flex-shrink:0;min-width:34px;min-height:34px;font-size:20px;color:#a8a8a8}
+#reqBox .item{display:flex;align-items:center;gap:8px;padding:8px 10px}
+#reqBox .item>div{flex:1;min-width:0}
 </style>
 </head>
 <body>
@@ -468,6 +479,16 @@ footer#composer{background:#000;border-top:1px solid var(--ig-line);padding:10px
 
 <!-- ÖNİZLEME OYNATICI -->
 <div id="pvBar" class="hide"><span id="pvTitle"></span><button class="ib" id="pvStop" title="Durdur">■</button></div>
+
+<!-- ARKADAŞ SEÇENEKLERİ -->
+<div id="mFMenu" class="modal hide"><div class="card" style="max-width:300px;gap:8px">
+  <div id="fmName" style="font-weight:700;font-size:15px;margin-bottom:2px"></div>
+  <button class="tool" id="fmPin"><i>📌</i><div><b id="fmPinT">Sabitle</b></div></button>
+  <button class="tool" id="fmMute"><i>🔔</i><div><b id="fmMuteT">Sessize al</b></div></button>
+  <button class="tool" id="fmBlock"><i>🚫</i><div><b>Engelle</b></div></button>
+  <button class="tool" id="fmRm"><i>✕</i><div><b style="color:#fb7185">Arkadaşlıktan çıkar</b></div></button>
+  <button class="btn2" data-close="mFMenu">Kapat</button>
+</div></div>
 
 <div id="toast" class="hide"></div>
 <div id="err" class="hide" title="Kapatmak için tıkla"></div>
@@ -785,13 +806,10 @@ function renderFriends(){
   list.forEach(({id,f})=>{
     const el=document.createElement("div");
     el.className="item"+(act?.friendUsername===f.friendUsername?" on":"");
-    el.innerHTML=`<img class="av" src="${esc(f.avatarUrl||AV)}"><div style="flex:1;min-width:0"><div class="ell" style="font-weight:600">${pinned.includes(f.friendUsername)?"📌 ":""}${esc(f.displayName||"@"+f.friendUsername)}</div><div class="ell" style="font-size:12px;color:var(--mut)">@${esc(f.friendUsername)} #${esc(f.friendTag)}${isMuted(f.friendUsername)?" · 🔕":""}</div></div><button class="ib" data-pinf="1" title="Sabitle" style="font-size:13px">📌</button><button class="ib" data-mute="1" title="Sessize al" style="font-size:13px">🔔</button><button class="ib" data-block="1" title="Engelle" style="font-size:13px">🚫</button><button class="ib" data-rm="1" title="Arkadaşlıktan çıkar" style="font-size:13px;color:var(--mut)">✕</button>`;
+    el.innerHTML=`<img class="av" src="${esc(f.avatarUrl||AV)}"><div><div class="fname">${pinned.includes(f.friendUsername)?"📌 ":""}${esc(f.displayName||("@"+f.friendUsername))}</div><div class="fsub">${f.displayName?"@"+esc(f.friendUsername)+" · ":""}#${esc(f.friendTag)}${isMuted(f.friendUsername)?" · 🔕":""}</div></div><button class="ib dots-btn" data-menu="1" title="Seçenekler">⋯</button>`;
     el.addEventListener("click",e=>{
       const b=e.target.closest("button");
-      if(b?.dataset.pinf) return togglePin(f.friendUsername);
-      if(b?.dataset.mute) return toggleMute(f.friendUsername);
-      if(b?.dataset.block) return blockUser(f.friendUsername);
-      if(b?.dataset.rm) return removeFriend(id,f);
+      if(b?.dataset.menu) return openFMenu(id,f);
       openChat(f);
     });
     box.appendChild(el);
@@ -1576,6 +1594,20 @@ document.addEventListener("visibilitychange",()=>{
 document.addEventListener("pointerdown",()=>{
   if("Notification" in window&&Notification.permission==="default") Notification.requestPermission().catch(()=>{});
 },{once:true});
+
+// ---------- Arkadaş seçenekleri ----------
+let fmTarget=null;
+function openFMenu(id,f){
+  fmTarget={id,f};
+  $("fmName").textContent=f.displayName||("@"+f.friendUsername);
+  $("fmPinT").textContent=lsGet("kisir_pinf_").includes(f.friendUsername)?"Sabitlemeyi kaldır":"Sabitle";
+  $("fmMuteT").textContent=isMuted(f.friendUsername)?"Sesi aç":"Sessize al";
+  $("mFMenu").classList.remove("hide");
+}
+on("fmPin","click",()=>{ const u=fmTarget.f.friendUsername; $("mFMenu").classList.add("hide"); togglePin(u); });
+on("fmMute","click",()=>{ const u=fmTarget.f.friendUsername; $("mFMenu").classList.add("hide"); toggleMute(u); });
+on("fmBlock","click",()=>{ const u=fmTarget.f.friendUsername; $("mFMenu").classList.add("hide"); blockUser(u); });
+on("fmRm","click",()=>{ const {id,f}=fmTarget; $("mFMenu").classList.add("hide"); removeFriend(id,f); });
 
 // ---------- Ana ekran ----------
 function paintHome(){
