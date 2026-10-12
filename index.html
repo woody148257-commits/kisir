@@ -909,7 +909,6 @@ on("mi","input",()=>{
   setDoc(rs,{chatRoomId:roomOf(act),typing:{[myId()]:now}},{merge:true}).catch(()=>{});
 });
 EMO.forEach(em=>{const b=document.createElement("button");b.className="ib";b.textContent=em;b.onclick=()=>{$("mi").value+=em;};$("emoji").appendChild(b);});
-on("bEmoji","click",()=>$("emoji").classList.toggle("hide"));
 
 async function sendFile(f){
   if(f.size>MAXF) return toast("Dosya en fazla 40 MB olabilir.");
