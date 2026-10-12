@@ -130,22 +130,13 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
 .item{border-radius:12px}
 .item:hover{background:#121212}
 .item.on{background:#1c1c1c;box-shadow:none}
-.avw{position:relative;flex-shrink:0;width:52px;height:52px;display:flex;align-items:center;justify-content:center}
-.avw .av{width:52px;height:52px;box-shadow:0 0 0 2px #000,0 0 0 4px #363636}
-.nb{position:absolute;top:-16px;left:50%;transform:translateX(-50%);max-width:120px;background:#fff;color:#000;font-size:11px;padding:4px 10px;border-radius:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 4px 14px rgba(0,0,0,.45);cursor:pointer;z-index:2}
-.nb:after{content:"";position:absolute;bottom:-4px;left:50%;margin-left:-4px;width:8px;height:8px;background:#fff;transform:rotate(45deg)}
-#myNb{top:-18px}
-#myNote{display:none}
 .b{background:#262626;border-radius:22px;padding:9px 14px;box-shadow:none}
 .b.me{background:linear-gradient(135deg,#3797f0,#8e5cf5);color:#fff}
 .meta{opacity:.5}
 .inp{background:#121212;border:1px solid #262626;border-radius:22px}
 .inp:focus{border-color:#555;box-shadow:none}
-#quick{display:flex;gap:8px;padding:8px 12px 0;overflow-x:auto;scrollbar-width:none;background:#000}
-#quick::-webkit-scrollbar{display:none}
-.qb{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:#262626;border:0;font-size:17px;cursor:pointer;transition:background .15s,transform .12s}
-.qb:hover{background:#363636}
-.qb:active{transform:scale(.92)}
+#composer .ib{width:38px;height:38px;border-radius:50%;background:transparent;font-size:19px}
+#composer .ib:hover{background:#262626}
 #bSend{background:#0095f6!important;box-shadow:none!important;border-radius:22px!important;padding:9px 16px!important}
 #bSend:hover{background:#1aa3ff!important}
 #chat>header .ib,#side .ib{color:#f5f5f5}
@@ -180,14 +171,13 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
 <main id="app" class="full hide">
   <aside id="side">
     <div class="row" style="padding:14px;border-bottom:1px solid var(--line)">
-      <div class="avw"><img id="myav" class="av" style="cursor:pointer"><div id="myNb" class="nb hide" data-mynote="1"></div></div>
+      <img id="myav" class="av" style="cursor:pointer">
       <div id="myinfo" style="flex:1;min-width:0;cursor:pointer">
         <div id="myname" class="ell" style="font-weight:700"></div>
         <div id="mytag" class="ell" style="font-size:11px;color:var(--mut);font-family:ui-monospace,monospace"></div>
-        <div id="myNote" class="ell" style="font-size:12px;color:#fcd34d"></div>
       </div>
       <button class="ib" id="bProfile" title="Profil">👤</button>
-      <button class="ib" id="bNote" title="Not yaz">📝</button>
+      
       <button class="ib" id="bSettings" title="Görünüm">🎨</button>
       <button class="ib" id="bLogout" title="Çıkış">⏻</button>
     </div>
@@ -234,24 +224,11 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
       <button class="ib" id="rbx" style="min-width:24px;min-height:24px;font-size:12px">✕</button>
     </div>
     <div id="ephRow" class="hide" style="padding:6px 14px 0"><span id="ephChip" class="chip" title="Kaldır">⏱ <span id="ephTxt"></span> ✕</span></div>
-    <div id="quick">
-      <button class="qb" data-q="file" title="Fotoğraf / dosya">🖼️</button>
-      <button class="qb" data-q="rec" title="Sesli mesaj">🎤</button>
-      <button class="qb" data-q="music" title="Müzik">🎵</button>
-      <button class="qb" data-q="loc" title="Konum">📍</button>
-      <button class="qb" data-q="calc" title="Hesap makinesi">🧮</button>
-      <button class="qb" data-q="list" title="Ortak liste">📝</button>
-      <button class="qb" data-q="weather" title="Hava durumu">🌤️</button>
-      <button class="qb" data-q="eph" title="Süreli mesaj">⏱️</button>
-      <button class="qb" data-q="mood" title="Ruh hali">💭</button>
-      <button class="qb" data-q="ai" title="Kısır AI">🤖</button>
-      <button class="qb" data-q="emoji" title="Emoji">😀</button>
-    </div>
-    <footer class="row" style="padding:10px 12px;border-top:1px solid var(--line);background:rgba(10,10,13,.6);backdrop-filter:blur(12px)">
-      <button class="ib" id="bEmoji" title="Emoji">😀</button>
-      <label class="ib" style="cursor:pointer" title="Görsel veya dosya">📎<input id="file" type="file" hidden></label>
+    <footer class="row" id="composer" style="padding:10px 12px;border-top:1px solid var(--line)">
+      <button class="ib" id="fTools" title="Araçlar">🧰</button>
+      <label class="ib" style="cursor:pointer" title="Fotoğraf veya dosya">🖼️<input id="file" type="file" hidden></label>
       <button class="ib" id="bRec" title="Sesli mesaj (en fazla 5 dk)">🎤</button>
-      <button class="ib" id="bMusicSend" title="Sohbete müzik gönder" style="font-size:18px">🎵</button>
+      <button class="ib" id="bMusicSend" title="Sohbete müzik gönder">🎵</button>
       <input id="mi" class="inp" placeholder="Mesaj yaz…" autocomplete="off" style="border-radius:999px">
       <button class="btn" id="bSend" style="border-radius:999px">Gönder</button>
     </footer>
@@ -276,14 +253,15 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
 <!-- ARAÇLAR MENÜSÜ -->
 <div id="mTools" class="modal hide"><div class="card">
   <div class="row" style="justify-content:space-between"><b style="font-size:16px">Araçlar</b><button class="ib" data-close="mTools">✕</button></div>
-  <button class="tool" id="tCalc"><i>🧮</i><div><b>Hesap makinesi</b><span>Sohbette hesap yapın, sonucu gönderin</span></div></button>
-  <button class="tool" id="tList"><i>📝</i><div><b>Ortak liste</b><span>İki kişinin birlikte düzenlediği yapılacaklar listesi</span></div></button>
-  <button class="tool" id="tMusic"><i>🎵</i><div><b>Müzik ara</b><span>30 sn önizleme, nota ekle veya sohbete gönder</span></div></button>
-  <button class="tool" id="tAI"><i>🤖</i><div><b>Kısır AI</b><span>Ücretsiz yapay zekâ ile sohbet edin</span></div></button>
-  <button class="tool" id="tLoc"><i>📍</i><div><b>Konumu paylaş</b><span>Bulunduğunuz yerin haritası gönderilir</span></div></button>
+  <button class="tool" id="tMusic"><i>🎵</i><div><b>Müzik gönder</b><span>Şarkı ara, 30 sn önizle, sohbete gönder</span></div></button>
+  <button class="tool" id="tCalc"><i>🧮</i><div><b>Hesap makinesi</b><span>İşlem yapın, sonucu sohbete gönderin</span></div></button>
+  <button class="tool" id="tList"><i>📝</i><div><b>Ortak liste</b><span>İkinizin birlikte düzenlediği liste</span></div></button>
+  <button class="tool" id="tLoc"><i>📍</i><div><b>Konumu gönder</b><span>Bulunduğunuz yerin haritası</span></div></button>
   <button class="tool" id="tWeather"><i>🌤️</i><div><b>Hava durumu</b><span>Bulunduğunuz yerin güncel havası</span></div></button>
-  <button class="tool" id="tEph"><i>⏱️</i><div><b>Süreli mesaj</b><span>Gönderilen mesajlar belli süre sonra silinir</span></div></button>
-  <button class="tool" id="tMood"><i>💭</i><div><b>Ruh halim</b><span>Arkadaşınız çevrimiçiyken bunu görür</span></div></button>
+  <button class="tool" id="tEph"><i>⏱️</i><div><b>Süreli mesaj</b><span>Mesajlar belli süre sonra silinir</span></div></button>
+  <button class="tool" id="tMood"><i>💭</i><div><b>Ruh halim</b><span>Çevrimiçiyken arkadaşınız görür</span></div></button>
+  <button class="tool" id="tAI"><i>🤖</i><div><b>Kısır AI</b><span>Ücretsiz yapay zekâ ile sohbet</span></div></button>
+  <button class="tool" id="tEmoji"><i>😀</i><div><b>Emoji</b><span>Emoji panelini aç</span></div></button>
 </div></div>
 
 <!-- HESAP MAKİNESİ -->
@@ -425,15 +403,6 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
   <button class="btn" data-close="mCTheme">Tamam</button>
 </div></div>
 
-<!-- NOT -->
-<div id="mNote" class="modal hide"><div class="card">
-  <div class="row" style="justify-content:space-between"><b style="font-size:16px">Notunuz</b><button class="ib" data-close="mNote">✕</button></div>
-  <div class="lbl">Arkadaşlarınız 24 saat boyunca görür. En fazla 60 karakter ve bir şarkı ekleyebilirsiniz.</div>
-  <input id="nText" class="inp" maxlength="60" placeholder="Ne düşünüyorsun?">
-  <div id="nTrack" class="hide tcard"></div>
-  <div class="row"><button class="btn2" id="nPick" style="flex:1">🎵 Şarkı ekle</button><button class="btn2" id="nClear" style="flex:1">Notu sil</button></div>
-  <button class="btn" id="nSave">Paylaş</button>
-</div></div>
 
 <!-- MÜZİK ARAMA -->
 <div id="mMusic" class="modal hide"><div class="card" style="max-width:480px;height:min(80dvh,640px);gap:10px">
@@ -451,7 +420,7 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import {getFirestore,collection,doc,addDoc,setDoc,getDoc,getDocs,updateDoc,deleteDoc,deleteField,query,where,orderBy,onSnapshot,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import {getFirestore,collection,doc,addDoc,setDoc,getDoc,getDocs,updateDoc,deleteDoc,deleteField,query,where,orderBy,limit,onSnapshot,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const db=getFirestore(initializeApp({
   apiKey:"AIzaSyDxe_5d7y1R4aW30uIYu2QQoifJ7aS6uO8",
@@ -563,13 +532,13 @@ async function auth(mode){
     let ok=x.pw===h;
     if(!ok&&x.password===p){ok=true;await updateDoc(d.ref,{pw:h,password:deleteField()});}
     if(!ok) return st("Şifre hatalı.");
-    enter({id:d.id,username:x.username,tag:x.tag,avatarUrl:x.avatarUrl||AV,displayName:x.displayName||"",bio:x.bio||"",mood:x.mood||"",note:x.note||null});
+    enter({id:d.id,username:x.username,tag:x.tag,avatarUrl:x.avatarUrl||AV,displayName:x.displayName||"",bio:x.bio||"",mood:x.mood||""});
   }catch(err){showErr("Giriş: "+err.message);st("Bağlantı hatası.");}
 }
 function enter(u){
   me=u; localStorage.setItem("kisir_me",JSON.stringify(u));
   $("auth").classList.add("hide"); $("app").classList.remove("hide");
-  paintMe(); paintMyNote(); applyTheme(); listFriends(); listenInvites(); listenInbox();
+  paintMe(); applyTheme(); listFriends(); listenInvites(); listenInbox();
   if(!navigator.mediaDevices?.getDisplayMedia) $("bShare").classList.add("hide");
   heartbeat(); clearInterval(hbTimer); hbTimer=setInterval(heartbeat,30000);
 }
@@ -709,15 +678,13 @@ on("cname","click",openFriend);
 const lsGet=k=>JSON.parse(localStorage.getItem(k+me.username)||"[]");
 const lsSet=(k,v)=>localStorage.setItem(k+me.username,JSON.stringify(v));
 const isMuted=u=>lsGet("kisir_mute_").includes(u);
-const noteMap={}, noteLive=n=>!!n&&Date.now()-n.ts<86400000;
-let noteUnsubs=[], lastFriends=[];
+let lastFriends=[];
 function listFriends(){
   unsub.friends?.();
   unsub.friends=onSnapshot(query(collection(db,"friends"),where("owner","==",me.username)),snap=>{
     lastFriends=[]; snap.forEach(d=>lastFriends.push({id:d.id,f:d.data()}));
     friendCount=snap.size; $("fHead").textContent="Arkadaşlar · "+snap.size; paintHome();
     renderFriends();
-    watchNotes(lastFriends.map(x=>x.f));
   },err=>showErr("Arkadaşlar: "+err.message));
 }
 function renderFriends(){
@@ -729,33 +696,17 @@ function renderFriends(){
   const pinned=lsGet("kisir_pinf_");
   const list=[...lastFriends].sort((a,b)=>pinned.includes(b.f.friendUsername)-pinned.includes(a.f.friendUsername));
   list.forEach(({id,f})=>{
-    const n=noteLive(noteMap[f.friendUsername])?noteMap[f.friendUsername]:null;
-    const noteText=n?((n.text||"")+(n.track?" 🎵 "+n.track.title:"")).trim():"";
     const el=document.createElement("div");
     el.className="item"+(act?.friendUsername===f.friendUsername?" on":"");
-    el.innerHTML=`<div class="avw"><img class="av" src="${esc(f.avatarUrl||AV)}">${noteText?`<div class="nb" data-note="1">${esc(noteText.slice(0,16))}</div>`:""}</div><div style="flex:1;min-width:0"><div class="ell" style="font-weight:600">${pinned.includes(f.friendUsername)?"📌 ":""}${esc(f.displayName||"@"+f.friendUsername)}</div><div class="ell" style="font-size:12px;color:var(--mut)">@${esc(f.friendUsername)} #${esc(f.friendTag)}${isMuted(f.friendUsername)?" · 🔕":""}</div></div><button class="ib" data-pinf="1" title="Sabitle" style="font-size:13px">📌</button><button class="ib" data-mute="1" title="Sessize al" style="font-size:13px">🔔</button><button class="ib" data-rm="1" title="Kaldır" style="font-size:13px;color:var(--mut)">✕</button>`;
+    el.innerHTML=`<img class="av" src="${esc(f.avatarUrl||AV)}"><div style="flex:1;min-width:0"><div class="ell" style="font-weight:600">${pinned.includes(f.friendUsername)?"📌 ":""}${esc(f.displayName||"@"+f.friendUsername)}</div><div class="ell" style="font-size:12px;color:var(--mut)">@${esc(f.friendUsername)} #${esc(f.friendTag)}${isMuted(f.friendUsername)?" · 🔕":""}</div></div><button class="ib" data-pinf="1" title="Sabitle" style="font-size:13px">📌</button><button class="ib" data-mute="1" title="Sessize al" style="font-size:13px">🔔</button><button class="ib" data-rm="1" title="Kaldır" style="font-size:13px;color:var(--mut)">✕</button>`;
     el.addEventListener("click",e=>{
       const b=e.target.closest("button");
-      if(e.target.closest("[data-note]")){
-        if(n?.track) playPreview(n.track.preview,n.track.title);
-        else toast("Bu notta şarkı yok.");
-        return;
-      }
       if(b?.dataset.pinf) return togglePin(f.friendUsername);
       if(b?.dataset.mute) return toggleMute(f.friendUsername);
       if(b?.dataset.rm) return removeFriend(id,f);
       openChat(f);
     });
     box.appendChild(el);
-  });
-}
-function watchNotes(fs){
-  noteUnsubs.forEach(u=>u()); noteUnsubs=[];
-  fs.forEach(f=>{
-    getDocs(query(collection(db,"users"),where("username","==",f.friendUsername),where("tag","==",f.friendTag))).then(s=>{
-      const d=s.docs[0]; if(!d) return;
-      noteUnsubs.push(onSnapshot(d.ref,x=>{ noteMap[f.friendUsername]=x.data()?.note||null; renderFriends(); }));
-    }).catch(()=>{});
   });
 }
 function togglePin(u){
@@ -1563,7 +1514,7 @@ function applyFind(){
 
 // ---------- Önizleme oynatıcı ----------
 const pv=new Audio();
-let pvTitle="", msList=[], selTrack=null, msMode="tool";
+let pvTitle="", msList=[], msMode="tool";
 function playPreview(url,title){
   if(!url) return;
   if(pv.src===url&&!pv.paused){ pv.pause(); return; }
@@ -1578,43 +1529,6 @@ function paintPv(){
 }
 ["play","pause","ended"].forEach(ev=>pv.addEventListener(ev,paintPv));
 on("pvStop","click",()=>{ pv.pause(); pv.removeAttribute("src"); paintPv(); });
-
-// ---------- Notlar ----------
-function paintMyNote(){
-  const n=noteLive(me.note)?me.note:null;
-  const t=n?((n.text||"")+(n.track?" 🎵 "+n.track.title:"")).trim():"";
-  $("myNb").textContent=t.slice(0,16);
-  $("myNb").classList.toggle("hide",!t);
-  $("myNote").textContent="";
-}
-function paintTrack(){
-  const box=$("nTrack");
-  if(!selTrack){ box.classList.add("hide"); box.innerHTML=""; return; }
-  box.classList.remove("hide");
-  box.innerHTML=`<img src="${esc(selTrack.art)}"><div style="flex:1;min-width:0"><div class="ell" style="font-weight:700">${esc(selTrack.title)}</div><div class="ell lbl">${esc(selTrack.artist)}</div></div><button class="ib" id="nTrackX" title="Kaldır">✕</button>`;
-  $("nTrackX").onclick=()=>{ selTrack=null; paintTrack(); };
-}
-on("bNote","click",()=>{
-  const n=noteLive(me.note)?me.note:null;
-  $("nText").value=n?.text||"";
-  selTrack=n?.track||null; paintTrack();
-  $("mNote").classList.remove("hide");
-});
-on("nPick","click",()=>{ $("mNote").classList.add("hide"); $("mMusic").classList.remove("hide"); $("msQ").focus(); });
-on("nClear","click",()=>saveNote(null));
-on("nSave","click",()=>{
-  const t=$("nText").value.trim().slice(0,60);
-  if(!t&&!selTrack) return toast("Bir metin veya şarkı ekleyin.");
-  saveNote({text:t,track:selTrack,ts:Date.now()});
-});
-async function saveNote(n){
-  try{
-    await updateDoc(doc(db,"users",me.id),{note:n});
-    me={...me,note:n}; localStorage.setItem("kisir_me",JSON.stringify(me));
-    paintMyNote(); $("mNote").classList.add("hide");
-    toast(n?"Notunuz paylaşıldı ✓":"Not silindi.");
-  }catch(err){showErr("Not: "+err.message);}
-}
 
 // ---------- Müzik (Apple Music / iTunes arama, anahtarsız) ----------
 async function itunesSearch(q){
@@ -1646,7 +1560,7 @@ async function doSearch(){
     msList.forEach((t,i)=>{
       const row=document.createElement("div");
       row.className="tcard";
-      row.innerHTML=`<img src="${esc(t.art)}"><div style="flex:1;min-width:0"><div class="ell" style="font-weight:700">${esc(t.title)}</div><div class="ell lbl">${esc(t.artist)}</div></div><button class="ib" data-a="play" data-i="${i}" title="Önizle">▶</button><button class="ib" data-a="note" data-i="${i}" title="Nota ekle">📝</button><button class="ib" data-a="send" data-i="${i}" title="Sohbete gönder">📤</button>`;
+      row.innerHTML=`<img src="${esc(t.art)}"><div style="flex:1;min-width:0"><div class="ell" style="font-weight:700">${esc(t.title)}</div><div class="ell lbl">${esc(t.artist)}</div></div><button class="ib" data-a="play" data-i="${i}" title="Önizle">▶</button><button class="ib" data-a="send" data-i="${i}" title="Sohbete gönder">📤</button>`;
       $("msRes").appendChild(row);
     });
   }catch(err){
@@ -1660,11 +1574,6 @@ on("msRes","click",async e=>{
   const b=e.target.closest("button"); if(!b) return;
   const t=msList[+b.dataset.i]; if(!t) return;
   if(b.dataset.a==="play") return playPreview(t.preview,`${t.title} — ${t.artist}`);
-  if(b.dataset.a==="note"){
-    selTrack=t; paintTrack();
-    $("mMusic").classList.add("hide"); $("mNote").classList.remove("hide");
-    return;
-  }
   if(!act) return toast("Önce bir sohbet açın.");
   try{
     await send("music",t.preview,`${t.title} — ${t.artist}`,{art:t.art});
@@ -1677,7 +1586,7 @@ const sessStart=Date.now();
 let inboxUnsub=null, unread=0;
 function listenInbox(){
   inboxUnsub?.();
-  inboxUnsub=onSnapshot(query(collection(db,"direct_messages"),where("to","==",myId())),snap=>{
+  inboxUnsub=onSnapshot(query(collection(db,"direct_messages"),where("to","==",myId()),limit(30)),snap=>{
     snap.docChanges().forEach(c=>{
       if(c.type!=="added") return;
       const m=c.doc.data();
@@ -1699,13 +1608,10 @@ document.addEventListener("pointerdown",()=>{
   if("Notification" in window&&Notification.permission==="default") Notification.requestPermission().catch(()=>{});
 },{once:true});
 
-// ---------- Hızlı araç çubuğu ----------
-on("quick","click",e=>{
-  const b=e.target.closest("[data-q]"); if(!b) return;
-  const map={file:"file",rec:"bRec",music:"tMusic",loc:"tLoc",calc:"tCalc",list:"tList",weather:"tWeather",eph:"tEph",mood:"tMood",ai:"tAI",emoji:"bEmoji"};
-  if(b.dataset.q==="ai"){ aiLoad(); $("mAI").classList.remove("hide"); return; }
-  $(map[b.dataset.q])?.click();
-});
+// ---------- Alt çubuk ----------
+on("fTools","click",()=>$("mTools").classList.remove("hide"));
+on("tEmoji","click",()=>{ $("mTools").classList.add("hide"); $("emoji").classList.remove("hide"); });
+
 // ---------- Ana ekran ----------
 function paintHome(){
   if(!me) return;
