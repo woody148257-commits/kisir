@@ -231,6 +231,8 @@ footer#composer{background:#000;border-top:1px solid var(--ig-line);padding:10px
 #toast{background:#262626!important;border:0!important;border-radius:12px!important;font-size:13px}
 #msgs::-webkit-scrollbar{width:6px}
 #msgs::-webkit-scrollbar-thumb{background:#262626;border-radius:6px}
+.reqHead{padding:10px 14px 4px;font-size:12px;color:#a8a8a8;letter-spacing:.04em;text-transform:uppercase}
+.ed{font-size:10px;opacity:.6;margin-left:6px}
 @media(max-width:820px){#chat>header{padding:10px 12px}#msgs{padding:14px 12px}.b{max-width:82%}}
 
 /* ===== Başlık & logo ===== */
@@ -279,6 +281,7 @@ footer#composer{background:#000;border-top:1px solid var(--ig-line);padding:10px
       <input id="fi" class="inp" placeholder="kullanici#1234" autocapitalize="none">
       <button class="btn" id="bAdd">Ekle</button>
     </div>
+    <div id="reqBox"></div>
     <div id="fHead">Arkadaşlar</div>
     <div id="friends" style="flex:1;overflow:auto;padding:8px"></div>
   </aside>
@@ -407,6 +410,7 @@ footer#composer{background:#000;border-top:1px solid var(--ig-line);padding:10px
       <input id="pnew" class="inp" type="password" placeholder="Yeni şifre (en az 4)">
     </div>
   </details>
+  <div id="blkBox" style="margin-top:6px"></div>
   <div id="pst" style="font-size:12px;color:#fb7185;min-height:16px"></div>
   <div class="row"><button class="btn" style="flex:1" id="bSaveProfile">Kaydet</button><button class="btn2" style="flex:1" data-close="mProfile">İptal</button></div>
 </div></div>
@@ -584,7 +588,7 @@ async function auth(mode){
     let ok=x.pw===h;
     if(!ok&&x.password===p){ok=true;await updateDoc(d.ref,{pw:h,password:deleteField()});}
     if(!ok) return st("Şifre hatalı.");
-    enter({id:d.id,username:x.username,tag:x.tag,avatarUrl:x.avatarUrl||AV,displayName:x.displayName||"",bio:x.bio||"",mood:x.mood||""});
+    enter({id:d.id,username:x.username,tag:x.tag,avatarUrl:x.avatarUrl||AV,displayName:x.displayName||"",bio:x.bio||"",mood:x.mood||"",blocked:x.blocked||[]});
   }catch(err){showErr("Giriş: "+err.message);st("Bağlantı hatası.");}
 }
 function enter(u){
@@ -670,6 +674,7 @@ function openProfile(){
   $("pname").value=me.displayName||""; $("pbio").value=me.bio||"";
   $("pold").value=""; $("pnew").value=""; $("pst").textContent="";
   $("mProfile").classList.remove("hide");
+  renderBlockList();
 }
 on("bProfile","click",openProfile);
 on("myav","click",openProfile);
@@ -726,35 +731,66 @@ async function openFriend(){
 }
 on("cname","click",openFriend);
 
-// ---------- Arkadaşlar ----------
+// ---------- Arkadaşlar, istekler, engelleme ----------
 const lsGet=k=>JSON.parse(localStorage.getItem(k+me.username)||"[]");
 const lsSet=(k,v)=>localStorage.setItem(k+me.username,JSON.stringify(v));
 const isMuted=u=>lsGet("kisir_mute_").includes(u);
-let lastFriends=[];
+const blocked=()=>me.blocked||[];
+let lastFriends=[], lastReq=[], peerBlocksMe=false;
 function listFriends(){
   unsub.friends?.();
   unsub.friends=onSnapshot(query(collection(db,"friends"),where("owner","==",me.username)),snap=>{
-    lastFriends=[]; snap.forEach(d=>lastFriends.push({id:d.id,f:d.data()}));
-    friendCount=snap.size; $("fHead").textContent="Arkadaşlar · "+snap.size; paintHome();
-    renderFriends();
+    lastFriends=[]; lastReq=[];
+    snap.forEach(d=>{
+      const f=d.data();
+      if(f.status==="pending") lastReq.push({id:d.id,f}); else lastFriends.push({id:d.id,f});
+    });
+    friendCount=lastFriends.length; $("fHead").textContent="Arkadaşlar · "+friendCount; paintHome();
+    renderRequests(); renderFriends();
   },err=>showErr("Arkadaşlar: "+err.message));
+}
+function renderRequests(){
+  const box=$("reqBox"); box.innerHTML="";
+  const items=lastReq.filter(x=>!blocked().includes(x.f.friendUsername));
+  if(!items.length) return;
+  box.innerHTML=`<div class="reqHead">İstekler · ${items.length}</div>`;
+  items.forEach(({id,f})=>{
+    const el=document.createElement("div");
+    el.className="item";
+    el.innerHTML=`<img class="av" src="${esc(f.avatarUrl||AV)}"><div style="flex:1;min-width:0"><div class="ell" style="font-weight:600">@${esc(f.friendUsername)}</div><div class="ell" style="font-size:12px;color:var(--mut)">#${esc(f.friendTag)} sizi eklemek istiyor</div></div><button class="btn" data-acc="1" style="padding:6px 10px;font-size:12px">Kabul</button><button class="btn2" data-rej="1" style="padding:6px 10px;font-size:12px;margin-left:4px">Reddet</button>`;
+    el.addEventListener("click",async e=>{
+      const b=e.target.closest("button"); if(!b) return;
+      try{
+        if(b.dataset.acc) await acceptReq(id,f);
+        if(b.dataset.rej) await deleteDoc(doc(db,"friends",id));
+      }catch(err){showErr("İstek: "+err.message);}
+    });
+    box.appendChild(el);
+  });
+}
+async function acceptReq(id,f){
+  await updateDoc(doc(db,"friends",id),{status:"accepted"});
+  await addDoc(collection(db,"friends"),{owner:f.friendUsername,friendUsername:me.username,friendTag:me.tag,avatarUrl:me.avatarUrl||AV,displayName:me.displayName||"",status:"accepted"});
+  toast("Arkadaş oldunuz ✓");
 }
 function renderFriends(){
   const box=$("friends"); box.innerHTML="";
-  if(!lastFriends.length){
-    box.innerHTML='<div class="lbl" style="padding:18px;text-align:center;line-height:1.7">Henüz arkadaşınız yok.<br>Yukarıdan <b>kullanici#1234</b> ile ekleyin.</div>';
+  const pinned=lsGet("kisir_pinf_");
+  const list=lastFriends.filter(x=>!blocked().includes(x.f.friendUsername))
+    .sort((a,b)=>pinned.includes(b.f.friendUsername)-pinned.includes(a.f.friendUsername));
+  if(!list.length){
+    box.innerHTML='<div class="lbl" style="padding:18px;text-align:center;line-height:1.7">Henüz arkadaşınız yok.<br>Yukarıdan <b>kullanici#1234</b> ile istek gönderin.</div>';
     return;
   }
-  const pinned=lsGet("kisir_pinf_");
-  const list=[...lastFriends].sort((a,b)=>pinned.includes(b.f.friendUsername)-pinned.includes(a.f.friendUsername));
   list.forEach(({id,f})=>{
     const el=document.createElement("div");
     el.className="item"+(act?.friendUsername===f.friendUsername?" on":"");
-    el.innerHTML=`<img class="av" src="${esc(f.avatarUrl||AV)}"><div style="flex:1;min-width:0"><div class="ell" style="font-weight:600">${pinned.includes(f.friendUsername)?"📌 ":""}${esc(f.displayName||"@"+f.friendUsername)}</div><div class="ell" style="font-size:12px;color:var(--mut)">@${esc(f.friendUsername)} #${esc(f.friendTag)}${isMuted(f.friendUsername)?" · 🔕":""}</div></div><button class="ib" data-pinf="1" title="Sabitle" style="font-size:13px">📌</button><button class="ib" data-mute="1" title="Sessize al" style="font-size:13px">🔔</button><button class="ib" data-rm="1" title="Kaldır" style="font-size:13px;color:var(--mut)">✕</button>`;
+    el.innerHTML=`<img class="av" src="${esc(f.avatarUrl||AV)}"><div style="flex:1;min-width:0"><div class="ell" style="font-weight:600">${pinned.includes(f.friendUsername)?"📌 ":""}${esc(f.displayName||"@"+f.friendUsername)}</div><div class="ell" style="font-size:12px;color:var(--mut)">@${esc(f.friendUsername)} #${esc(f.friendTag)}${isMuted(f.friendUsername)?" · 🔕":""}</div></div><button class="ib" data-pinf="1" title="Sabitle" style="font-size:13px">📌</button><button class="ib" data-mute="1" title="Sessize al" style="font-size:13px">🔔</button><button class="ib" data-block="1" title="Engelle" style="font-size:13px">🚫</button><button class="ib" data-rm="1" title="Arkadaşlıktan çıkar" style="font-size:13px;color:var(--mut)">✕</button>`;
     el.addEventListener("click",e=>{
       const b=e.target.closest("button");
       if(b?.dataset.pinf) return togglePin(f.friendUsername);
       if(b?.dataset.mute) return toggleMute(f.friendUsername);
+      if(b?.dataset.block) return blockUser(f.friendUsername);
       if(b?.dataset.rm) return removeFriend(id,f);
       openChat(f);
     });
@@ -771,23 +807,30 @@ function toggleMute(u){
   lsSet("kisir_mute_",a.includes(u)?a.filter(x=>x!==u):[...a,u]);
   renderFriends();
 }
-async function addFriend(){
-  const [fu,ft]=$("fi").value.trim().toLowerCase().replace(/^@/,"").split("#").map(s=>(s||"").trim());
-  if(!fu||!ft) return toast("kullanici#1234 formatında yazın.");
-  if(fu===me.username) return toast("Kendinizi ekleyemezsiniz.");
-  try{
-    const s=await getDocs(query(collection(db,"users"),where("username","==",fu),where("tag","==",ft)));
-    if(s.empty) return toast("Kullanıcı bulunamadı.");
-    const f=s.docs[0].data();
-    const dup=await getDocs(query(collection(db,"friends"),where("owner","==",me.username),where("friendUsername","==",f.username)));
-    if(!dup.empty) return toast("Zaten arkadaşsınız.");
-    await addDoc(collection(db,"friends"),{owner:me.username,friendUsername:f.username,friendTag:f.tag,avatarUrl:f.avatarUrl||AV,displayName:f.displayName||""});
-    await addDoc(collection(db,"friends"),{owner:f.username,friendUsername:me.username,friendTag:me.tag,avatarUrl:me.avatarUrl||AV,displayName:me.displayName||""});
-    $("fi").value=""; toast("Arkadaş eklendi ✓");
-  }catch(err){showErr("Arkadaş ekleme: "+err.message);}
+async function saveBlocked(){
+  localStorage.setItem("kisir_me",JSON.stringify(me));
+  try{ await updateDoc(doc(db,"users",me.id),{blocked:me.blocked||[]}); }
+  catch(err){showErr("Engel: "+err.message);}
 }
-on("bAdd","click",addFriend);
-on("fi","keydown",e=>{if(e.key==="Enter") addFriend();});
+async function blockUser(u){
+  if(!confirm(`@${u} engellensin mi? Size mesaj gönderemez, sizi göremez.`)) return;
+  me={...me,blocked:[...new Set([...blocked(),u])]};
+  await saveBlocked();
+  if(act?.friendUsername===u) closeChat();
+  renderFriends(); renderRequests(); toast("Kullanıcı engellendi.");
+}
+async function unblockUser(u){
+  me={...me,blocked:blocked().filter(x=>x!==u)};
+  await saveBlocked();
+  renderBlockList(); renderFriends(); toast("Engel kaldırıldı.");
+}
+function renderBlockList(){
+  const list=blocked();
+  $("blkBox").innerHTML=list.length
+    ?'<div class="lbl" style="margin-bottom:4px">Engellenenler</div>'+list.map(u=>`<div class="row" style="justify-content:space-between;padding:6px 0"><span>@${esc(u)}</span><button class="btn2" data-unb="${esc(u)}" style="padding:6px 10px;font-size:12px">Engeli kaldır</button></div>`).join("")
+    :"";
+}
+on("blkBox","click",e=>{ const u=e.target.closest("[data-unb]")?.dataset.unb; if(u) unblockUser(u); });
 async function removeFriend(id,f){
   if(!confirm(`@${f.friendUsername} arkadaşlıktan çıkarılsın mı?`)) return;
   try{
@@ -796,6 +839,41 @@ async function removeFriend(id,f){
     await Promise.all(back.docs.map(d=>deleteDoc(d.ref)));
     if(act?.friendUsername===f.friendUsername) closeChat();
   }catch(err){showErr("Silme: "+err.message);}
+}
+async function addFriend(){
+  const [fu,ft]=$("fi").value.trim().toLowerCase().replace(/^@/,"").split("#").map(s=>(s||"").trim());
+  if(!fu||!ft) return toast("kullanici#1234 formatında yazın.");
+  if(fu===me.username) return toast("Kendinize istek gönderemezsiniz.");
+  try{
+    const s=await getDocs(query(collection(db,"users"),where("username","==",fu),where("tag","==",ft)));
+    if(s.empty) return toast("Kullanıcı bulunamadı.");
+    const f=s.docs[0].data();
+    if(blocked().includes(f.username)) return toast("Bu kullanıcı engelli. Engeli profilinizden kaldırabilirsiniz.");
+    const mine=await getDocs(query(collection(db,"friends"),where("owner","==",me.username),where("friendUsername","==",f.username)));
+    if(mine.docs.some(d=>d.data().status!=="pending")) return toast("Zaten arkadaşsınız.");
+    const incoming=mine.docs.find(d=>d.data().status==="pending");
+    if(incoming){ await acceptReq(incoming.id,incoming.data()); $("fi").value=""; return; }
+    const out=await getDocs(query(collection(db,"friends"),where("owner","==",f.username),where("friendUsername","==",me.username),where("status","==","pending")));
+    if(!out.empty) return toast("İsteğiniz zaten gönderildi, bekleniyor.");
+    await addDoc(collection(db,"friends"),{owner:f.username,friendUsername:me.username,friendTag:me.tag,avatarUrl:me.avatarUrl||AV,displayName:me.displayName||"",status:"pending"});
+    $("fi").value=""; toast("Arkadaşlık isteği gönderildi ✓");
+  }catch(err){showErr("Arkadaşlık: "+err.message);}
+}
+on("bAdd","click",addFriend);
+on("fi","keydown",e=>{if(e.key==="Enter") addFriend();});
+
+// ---------- Mesaj düzenleme (gönderimden sonra 15 dakika) ----------
+async function editMsg(id){
+  const m=msgCache[id]; if(!m) return;
+  const t=m.createdAt?.toMillis?.()??Date.now();
+  if(Date.now()-t>900000) return toast("Mesajlar yalnızca 15 dakika içinde düzenlenebilir.");
+  const v=prompt("Mesajı düzenle:",m.text);
+  if(v===null) return;
+  const nv=v.trim();
+  if(!nv) return toast("Boş mesaj gönderilemez.");
+  if(nv.length>3000) return toast("En fazla 3000 karakter olabilir.");
+  try{ await updateDoc(doc(db,"direct_messages",id),{text:nv,edited:true}); }
+  catch(err){showErr("Düzenleme: "+err.message);}
 }
 
 // ---------- Sohbet ----------
@@ -833,7 +911,7 @@ function bubbleHTML(id,m,mine){
   else if(m.type==="audio") body=`<audio controls src="${esc(m.text)}" style="height:34px;max-width:240px"></audio>`;
   else if(m.type==="file") body=`<a href="${esc(m.text)}" download="${esc(m.name||"dosya")}" style="color:inherit">📎 ${esc(m.name||"Dosya")}</a>`;
   else body=esc(m.text).replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">$1</a>');
-  return `<div class="b${mine?" me":""}">${m.replyTo?`<div class="q ell">${esc(m.replyTo)}</div>`:""}${body}<div class="meta"><button data-reply="${id}" title="Yanıtla">↩</button><button data-pin="${id}" data-on="${!!m.isPinned}" title="Sabitle">📌</button>${mine?`<button data-del="${id}" title="Sil">🗑️</button>`:""}</div></div>`;
+  return `<div class="b${mine?" me":""}">${m.replyTo?`<div class="q ell">${esc(m.replyTo)}</div>`:""}${body}${m.edited?'<span class="ed">düzenlendi</span>':""}<div class="meta">${mine&&m.type==="text"&&Date.now()-(m.createdAt?.toMillis?.()??Date.now())<=900000?`<button data-edit="${id}" title="Düzenle">✏️</button>`:""}<button data-reply="${id}" title="Yanıtla">↩</button><button data-pin="${id}" data-on="${!!m.isPinned}" title="Sabitle">📌</button>${mine?`<button data-del="${id}" title="Sil">🗑️</button>`:""}</div></div>`;
 }
 function reactHTML(m){
   const n=m.reacts?Object.keys(m.reacts).length:0;
@@ -900,6 +978,7 @@ on("msgs","click",async e=>{
       await updateDoc(doc(db,"direct_messages",id),{["votes."+safeKey(myId())]:+i});
       return;
     }
+    if(b.dataset.edit){ editMsg(b.dataset.edit); return; }
     if(b.dataset.pv){ playPreview(b.dataset.pv,b.dataset.title); return; }
     if(b.dataset.fid){ openBig(b); return; }
     if(b.dataset.reply){
@@ -946,6 +1025,7 @@ async function send(type,text,name="",extra={}){
 async function sendText(){
   const t=$("mi").value.trim();
   if(!t||!act) return;
+  if(peerBlocksMe) return toast("Bu kişi sizi engelledi, mesaj gönderemezsiniz.");
   if(t.length>3000) return toast("Mesaj en fazla 3000 karakter olabilir.");
   $("mi").value="";
   try{await send("text",t);}
@@ -1023,7 +1103,7 @@ function watchPeer(f){
       unsub.peer=onSnapshot(d.ref,x=>{
         const u=x.data()||{};
         peerSeen=u.lastSeen?.toMillis?.()||0;
-        peerMood=u.mood||"";
+        peerMood=u.mood||""; peerBlocksMe=(u.blocked||[]).includes(me.username);
         paintStatus();
       });
     }).catch(err=>showErr("Durum: "+err.message));
@@ -1481,6 +1561,7 @@ function listenInbox(){
       const t=m.createdAt?.toMillis?.()??Date.now();
       if(t<sessStart-2000) return;
       const from=String(m.sender).split("#")[0];
+      if(blocked().includes(from)) return;
       if(isMuted(from)) return;
       if(!document.hidden&&act&&act.friendUsername===from) return;
       playPing();
