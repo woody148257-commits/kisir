@@ -412,7 +412,9 @@ const db=getFirestore(initializeApp({
 }));
 
 // ---------- Yardımcılar ----------
-const $=id=>document.getElementById(id);
+// Güvenli öğe erişimi: öğe yoksa hata vermeden uyarı yazar (null hatasını önler)
+const mkDummy=()=>{const f=function(){return mkDummy();};return new Proxy(f,{get:(t,k)=>(k in t?t[k]:mkDummy()),set:()=>true,apply:()=>mkDummy()});};
+const $=id=>{const el=document.getElementById(id); if(!el) console.warn("Eksik öğe:",id); return el||mkDummy();};
 const on=(id,ev,fn)=>$(id).addEventListener(ev,fn);
 const AV="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80";
 const LIMIT=600*1024, PART=450*1024, MAXF=40*1024*1024;
@@ -800,8 +802,7 @@ function renderMsgs(snap){
     if(el.dataset.h!==h){ el.dataset.h=h; el.querySelector(".bw").innerHTML=h; }
     const showSeen=mine&&d.id===lastMine&&seenOther>=t;
     const sb=el.querySelector(".seenbox");
-    sb.textContent=showSeen?"✓✓ Görüldü":"";
-    sb.className=showSeen?"seen":"seenbox";
+    if(sb){ sb.textContent=showSeen?"✓✓ Görüldü":""; sb.className=showSeen?"seen":"seenbox"; }
     order.push(el);
   });
   for(const [id,el] of elById){
