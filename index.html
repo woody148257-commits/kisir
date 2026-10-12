@@ -149,6 +149,31 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
 #home .homecard{background:#121212;border:1px solid #262626}
 .qcard{background:#121212;border:1px solid #262626}
 .qcard:hover{background:#1c1c1c}
+
+/* Instagram tarzı son dokunuşlar */
+#chat>header{padding:12px 16px;min-height:60px}
+#chat>header #cname{font-size:15px;font-weight:600}
+#chat>header #cstatus{font-size:12px}
+#side>div:first-child{padding:16px 16px 12px}
+#side .av{width:56px;height:56px}
+.item{padding:10px 12px;border-radius:14px}
+.item .av{width:52px;height:52px}
+.b{font-size:14px;line-height:1.4}
+.rm{margin-bottom:1px}
+#composer{gap:6px;background:#000;border-top:1px solid #262626}
+#composer .ib{width:40px;height:40px;border-radius:50%;background:transparent;font-size:20px}
+#composer .ib:hover{background:#1c1c1c}
+#composer #mi{background:#121212;border:1px solid #262626;padding:11px 16px;font-size:14px}
+#composer #bSend{background:transparent!important;color:#0095f6!important;border:0!important;font-weight:700;padding:8px 6px!important;box-shadow:none!important}
+#composer #bSend:disabled{opacity:.4}
+#emoji{background:#121212!important;border:1px solid #262626!important;border-radius:20px!important;padding:8px!important;gap:4px!important;max-height:200px!important;margin:0 12px 6px!important}
+#emoji button{width:40px;height:40px;font-size:22px;border-radius:12px;background:transparent}
+#emoji button:hover{background:#262626}
+#msgs{padding:18px 20px;gap:6px}
+.btn{background:#0095f6;border-radius:12px}
+#home .homecard{border-radius:24px}
+#home .qcard{border-radius:18px}
+::selection{background:#0095f6;color:#fff}
 @media(max-width:820px){#side{width:100%}#app.chat-open #side{display:none}#app:not(.chat-open) #chat{display:none}}
 </style>
 </head>
@@ -197,7 +222,7 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
         <div id="cstatus" class="ell" style="font-size:12px;min-height:16px"></div>
       </div>
       <button class="ib" id="bFind" title="Mesajlarda ara">🔍</button>
-      <button class="ib" id="bTools" title="Araçlar">🧰</button>
+      
       <button class="ib" id="bCTheme" title="Sohbet teması">🖌️</button>
       <button class="ib" id="bRoom" title="Birlikte dinle">🎵</button>
       <button class="ib" id="bShare" title="Ekran paylaş">🖥️</button>
@@ -223,12 +248,12 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
       <span id="rbtxt" class="ell" style="flex:1"></span>
       <button class="ib" id="rbx" style="min-width:24px;min-height:24px;font-size:12px">✕</button>
     </div>
-    <div id="ephRow" class="hide" style="padding:6px 14px 0"><span id="ephChip" class="chip" title="Kaldır">⏱ <span id="ephTxt"></span> ✕</span></div>
-    <footer class="row" id="composer" style="padding:10px 12px;border-top:1px solid var(--line)">
-      <button class="ib" id="fTools" title="Araçlar">🧰</button>
+        <footer class="row" id="composer" style="padding:10px 12px;border-top:1px solid var(--line)">
       <label class="ib" style="cursor:pointer" title="Fotoğraf veya dosya">🖼️<input id="file" type="file" hidden></label>
-      <button class="ib" id="bRec" title="Sesli mesaj (en fazla 5 dk)">🎤</button>
+      <button class="ib" id="bRec" title="Sesli mesaj">🎤</button>
+      <button class="ib" id="bLoc" title="Konumu gönder">📍</button>
       <button class="ib" id="bMusicSend" title="Sohbete müzik gönder">🎵</button>
+      <button class="ib" id="bEmo" title="Emoji gönder">😀</button>
       <input id="mi" class="inp" placeholder="Mesaj yaz…" autocomplete="off" style="border-radius:999px">
       <button class="btn" id="bSend" style="border-radius:999px">Gönder</button>
     </footer>
@@ -241,8 +266,6 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
       <div class="stat"><b id="hFriends">0</b><span>arkadaş</span></div>
     </div>
     <div class="grid">
-      <button class="qcard" id="hAI"><i>🤖</i><b>Kısır AI</b><span>Soru sor, fikir al</span></button>
-      <button class="qcard" id="hTools"><i>🧰</i><b>Araçlar</b><span>Hesap, ortak liste, hava, konum</span></button>
       <button class="qcard" id="hProfile"><i>👤</i><b>Profilim</b><span>Ad, fotoğraf, biyografi</span></button>
       <button class="qcard" id="hLook"><i>🎨</i><b>Görünüm</b><span>Renk, arka plan, yazı boyutu</span></button>
     </div>
@@ -251,55 +274,12 @@ footer.row{background:#000!important;border-top:1px solid #262626!important;back
 </main>
 
 <!-- ARAÇLAR MENÜSÜ -->
-<div id="mTools" class="modal hide"><div class="card">
-  <div class="row" style="justify-content:space-between"><b style="font-size:16px">Araçlar</b><button class="ib" data-close="mTools">✕</button></div>
-  <button class="tool" id="tMusic"><i>🎵</i><div><b>Müzik gönder</b><span>Şarkı ara, 30 sn önizle, sohbete gönder</span></div></button>
-  <button class="tool" id="tCalc"><i>🧮</i><div><b>Hesap makinesi</b><span>İşlem yapın, sonucu sohbete gönderin</span></div></button>
-  <button class="tool" id="tList"><i>📝</i><div><b>Ortak liste</b><span>İkinizin birlikte düzenlediği liste</span></div></button>
-  <button class="tool" id="tLoc"><i>📍</i><div><b>Konumu gönder</b><span>Bulunduğunuz yerin haritası</span></div></button>
-  <button class="tool" id="tWeather"><i>🌤️</i><div><b>Hava durumu</b><span>Bulunduğunuz yerin güncel havası</span></div></button>
-  <button class="tool" id="tEph"><i>⏱️</i><div><b>Süreli mesaj</b><span>Mesajlar belli süre sonra silinir</span></div></button>
-  <button class="tool" id="tMood"><i>💭</i><div><b>Ruh halim</b><span>Çevrimiçiyken arkadaşınız görür</span></div></button>
-  <button class="tool" id="tAI"><i>🤖</i><div><b>Kısır AI</b><span>Ücretsiz yapay zekâ ile sohbet</span></div></button>
-  <button class="tool" id="tEmoji"><i>😀</i><div><b>Emoji</b><span>Emoji panelini aç</span></div></button>
-</div></div>
-
-<!-- HESAP MAKİNESİ -->
-<div id="mCalc" class="modal hide"><div class="card" style="max-width:340px">
-  <div class="row" style="justify-content:space-between"><b style="font-size:16px">Hesap makinesi</b><button class="ib" data-close="mCalc">✕</button></div>
-  <div id="calcOut">0</div>
-  <div class="keys" id="calcKeys"></div>
-  <button class="btn" id="calcSend">Sonucu sohbete gönder</button>
-</div></div>
-
-<!-- ORTAK LİSTE -->
-<div id="mList" class="modal hide"><div class="card">
-  <div class="row" style="justify-content:space-between"><b style="font-size:16px">Ortak liste</b><button class="ib" data-close="mList">✕</button></div>
-  <div class="row"><input id="lstIn" class="inp" placeholder="Yeni madde"><button class="btn" id="lstAdd">Ekle</button></div>
-  <div id="lstBox" style="display:flex;flex-direction:column;gap:2px;max-height:50vh;overflow:auto"></div>
-</div></div>
 
 
-<!-- HAVA DURUMU -->
-<div id="mWeather" class="modal hide"><div class="card" style="text-align:center">
-  <div class="row" style="justify-content:space-between"><b style="font-size:16px">Hava durumu</b><button class="ib" data-close="mWeather">✕</button></div>
-  <div id="wTxt" style="font-size:20px;font-weight:700;padding:14px 0"></div>
-  <button class="btn2" data-close="mWeather">Kapat</button>
-</div></div>
 
-<!-- RUH HALİ -->
-<div id="mMood" class="modal hide"><div class="card">
-  <div class="row" style="justify-content:space-between"><b style="font-size:16px">Ruh halim</b><button class="ib" data-close="mMood">✕</button></div>
-  <input id="moodIn" class="inp" maxlength="40" placeholder="Örn: ☕ kahve molası">
-  <button class="btn" id="moodGo">Kaydet</button>
-</div></div>
 
-<!-- KISIR AI -->
-<div id="mAI" class="modal hide"><div class="card" style="max-width:520px;height:min(80dvh,640px);padding:0;gap:0">
-  <div class="row" style="padding:14px 16px;border-bottom:1px solid var(--line)"><span style="font-size:20px">🤖</span><b style="flex:1">Kısır AI</b><button class="btn2" id="aiClear" style="padding:6px 10px;font-size:12px">Temizle</button><button class="ib" data-close="mAI">✕</button></div>
-  <div id="aiMsgs" style="flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:8px"></div>
-  <div class="row" style="padding:10px;border-top:1px solid var(--line)"><input id="aiIn" class="inp" placeholder="Bir şey sor…" autocomplete="off" style="border-radius:999px"><button class="btn" id="aiGo" style="border-radius:999px">Sor</button></div>
-</div></div>
+
+
 <!-- EKRAN PAYLAŞIM ÇUBUĞU -->
 <div id="shBar" class="hide card">
   <span class="live"><i></i>CANLI</span>
@@ -501,7 +481,7 @@ async function openBig(b){
 // ---------- Durum ----------
 let me=null, act=null, rState=null, rs=null, lastMsg=null, replyTo="", chatTheme={};
 let lastSeenOther=0, peerSeen=0, peerMood="", seenAt=0, typingAt=0, hbTimer=null, recTimer=null, rec=null, chunks=[];
-let loadingKey=null, syncTimer=null, sess=null, inv=null, ephSec=0, calcExpr="";
+let loadingKey=null, syncTimer=null, sess=null, inv=null;
 let firstLoad=true, actx=null, friendCount=0;
 const unsub={}, msgIdx={}, msgCache={}, elById=new Map(), aud=new Audio();
 
@@ -887,7 +867,6 @@ async function send(type,text,name="",extra={}){
   if(!act) return;
   const data={chatRoomId:roomOf(act),sender:myId(),to:otherId(act),text,type,name,isAnon:false,isPinned:false,createdAt:serverTimestamp()};
   if(replyTo) data.replyTo=replyTo;
-  if(ephSec) data.expiresAt=Date.now()+ephSec*1000;
   Object.assign(data,extra);
   await addDoc(collection(db,"direct_messages"),data);
   replyTo=""; $("rbar").classList.add("hide");
@@ -908,7 +887,7 @@ on("mi","input",()=>{
   const now=Date.now(); if(now-typingAt<2500) return; typingAt=now;
   setDoc(rs,{chatRoomId:roomOf(act),typing:{[myId()]:now}},{merge:true}).catch(()=>{});
 });
-EMO.forEach(em=>{const b=document.createElement("button");b.className="ib";b.textContent=em;b.onclick=()=>{$("mi").value+=em;};$("emoji").appendChild(b);});
+EMO.forEach(em=>{const b=document.createElement("button");b.className="ib";b.textContent=em;b.onclick=()=>{$("emoji").classList.add("hide"); send("text",em).catch(err=>showErr("Emoji: "+err.message));};$("emoji").appendChild(b);});
 
 async function sendFile(f){
   if(f.size>MAXF) return toast("Dosya en fazla 40 MB olabilir.");
@@ -951,176 +930,17 @@ on("bRec","click",async()=>{
   recTimer=setTimeout(()=>{if(rec.state==="recording") rec.stop();},300000);
 });
 
-// ---------- Araçlar ----------
-on("bTools","click",()=>$("mTools").classList.remove("hide"));
-const openTool=id=>{$("mTools").classList.add("hide");$(id).classList.remove("hide");};
-
-// Hesap makinesi
-const CALC_KEYS=["C","⌫","%","/","7","8","9","*","4","5","6","-","1","2","3","+","0",".","(",")"];
-CALC_KEYS.forEach(k=>{
-  const b=document.createElement("button");
-  b.textContent=k;
-  if("/*-+".includes(k)) b.className="op";
-  b.onclick=()=>calcKey(k);
-  $("calcKeys").appendChild(b);
-});
-const eqBtn=document.createElement("button"); eqBtn.textContent="="; eqBtn.className="eq"; eqBtn.style.gridColumn="span 4";
-eqBtn.onclick=()=>calcKey("=");
-$("calcKeys").appendChild(eqBtn);
-function calcKey(k){
-  if(k==="C"){calcExpr="";}
-  else if(k==="⌫"){calcExpr=calcExpr.slice(0,-1);}
-  else if(k==="="){
-    try{ calcExpr=calcEval(calcExpr); }
-    catch(err){ calcExpr=""; toast(err.message); }
-  }
-  else calcExpr+=k;
-  $("calcOut").textContent=calcExpr||"0";
-}
-function calcEval(s){
-  const e=s.replace(/%/g,"/100").replace(/\s/g,"");
-  if(!e) throw new Error("Boş ifade");
-  if(!/^[0-9+\-*/().]+$/.test(e)) throw new Error("Geçersiz ifade");
-  const v=Function('"use strict";return ('+e+')')();
-  if(!Number.isFinite(v)) throw new Error("Sonuç hesaplanamadı");
-  return String(Math.round(v*1e10)/1e10);
-}
-on("tCalc","click",()=>{ openTool("mCalc"); $("calcOut").textContent=calcExpr||"0"; });
-on("calcSend","click",async()=>{
-  if(!calcExpr) return toast("Önce bir işlem yapın.");
-  try{ await send("text","🧮 "+calcExpr+" = "+($("calcOut").textContent)); $("mCalc").classList.add("hide"); }
-  catch(err){showErr("Hesap: "+err.message);}
-});
-
-// Ortak liste (listen_rooms.todos)
-function paintList(){
-  const items=rState?.todos||[];
-  $("lstBox").innerHTML=items.length?items.map(t=>`<div class="item" style="cursor:default"><input type="checkbox" data-tk="${esc(t.id)}" ${t.d?"checked":""}><span class="ell" style="flex:1;${t.d?"text-decoration:line-through;opacity:.6":""}">${esc(t.t)}</span><button class="ib" data-tdel="${esc(t.id)}" title="Sil">✕</button></div>`).join(""):'<div class="lbl">Liste boş. Yukarıdan madde ekleyin.</div>';
-}
-async function saveTodos(list){
-  if(!rs||!act) return;
-  try{ await setDoc(rs,{chatRoomId:roomOf(act),todos:list},{merge:true}); }
-  catch(err){showErr("Liste: "+err.message);}
-}
-on("tList","click",()=>{ openTool("mList"); paintList(); });
-on("lstAdd","click",async()=>{
-  const t=$("lstIn").value.trim(); if(!t) return;
-  const list=[...(rState?.todos||[]),{id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:t.slice(0,120),d:false}];
-  $("lstIn").value=""; await saveTodos(list);
-});
-on("lstIn","keydown",e=>{if(e.key==="Enter") $("lstAdd").click();});
-on("lstBox","change",async e=>{
-  const id=e.target.dataset.tk; if(!id) return;
-  await saveTodos((rState?.todos||[]).map(t=>t.id===id?{...t,d:e.target.checked}:t));
-});
-on("lstBox","click",async e=>{
-  const id=e.target.closest("button")?.dataset.tdel; if(!id) return;
-  await saveTodos((rState?.todos||[]).filter(t=>t.id!==id));
-});
-
-// ---------- Kısır AI (anahtarsız, ücretsiz) ----------
-let aiHist=[], aiBusy=false;
-const aiKey=()=>"kisir_ai_"+me.username;
-function aiLoad(){ aiHist=JSON.parse(localStorage.getItem(aiKey())||"[]"); paintAI(); }
-function aiSave(){ localStorage.setItem(aiKey(),JSON.stringify(aiHist.slice(-40))); }
-function paintAI(){
-  $("aiMsgs").innerHTML=aiHist.map(m=>`<div style="align-self:${m.r==="user"?"flex-end":"flex-start"};max-width:85%;padding:9px 13px;border-radius:16px;background:${m.r==="user"?"var(--acc)":"rgba(255,255,255,.09)"};color:#fff;white-space:pre-wrap;word-break:break-word">${esc(m.c)}</div>`).join("")
-    ||'<div class="lbl">Merhaba! Ne konuşmak istersin?</div>';
-  $("aiMsgs").scrollTop=1e9;
-}
-async function aiAsk(text){
-  aiBusy=true;
-  aiHist.push({r:"user",c:text},{r:"assistant",c:"…"});
-  paintAI();
-  const ctx=aiHist.slice(0,-2).slice(-10);
-  const sys="Sen Kısır AI'sın. Kısa, net ve samimi cevap ver. Kullanıcı başka dil kullanmadıkça Türkçe yaz.";
-  const clean=t=>{
-    t=String(t??"").trim();
-    if(!t) return "";
-    if(/^[\[{]/.test(t)&&/[\]}]$/.test(t)) return "";
-    return t;
-  };
-  let answer="";
-  try{
-    const r=await fetch("https://text.pollinations.ai/openai",{
-      method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"openai",messages:[{role:"system",content:sys},...ctx.map(m=>({role:m.r,content:m.c})),{role:"user",content:text}]})
-    });
-    const raw=await r.text();
-    try{ answer=clean(JSON.parse(raw).choices?.[0]?.message?.content); }
-    catch(_){ answer=clean(raw); }
-  }catch(e){}
-  if(!answer){
-    try{
-      const convo=ctx.map(m=>(m.r==="user"?"Kullanıcı: ":"Asistan: ")+m.c).join("\n");
-      const r2=await fetch("https://text.pollinations.ai/"+encodeURIComponent(sys+"\n"+convo+"\nKullanıcı: "+text+"\nAsistan:"));
-      answer=clean(await r2.text());
-    }catch(e){}
-  }
-  aiHist[aiHist.length-1]={r:"assistant",c:answer||"Şu an yanıt alamadım. Birkaç saniye sonra tekrar deneyin."};
-  aiBusy=false;
-  paintAI(); aiSave();
-}
-async function sendAI(){
-  const t=$("aiIn").value.trim();
-  if(!t||aiBusy) return;
-  $("aiIn").value="";
-  await aiAsk(t);
-}
-on("tAI","click",()=>{ $("mTools").classList.add("hide"); aiLoad(); $("mAI").classList.remove("hide"); });
-on("aiGo","click",sendAI);
-on("aiIn","keydown",e=>{if(e.key==="Enter") sendAI();});
-on("aiClear","click",()=>{ aiHist=[]; aiSave(); paintAI(); });
-
-// Konum
-on("tLoc","click",()=>{
-  $("mTools").classList.add("hide");
+// ---------- Konum ----------
+on("bLoc","click",()=>{
   if(!act) return toast("Önce bir sohbet açın.");
   if(!navigator.geolocation) return toast("Bu cihaz konumu desteklemiyor.");
+  toast("Konum alınıyor…");
   navigator.geolocation.getCurrentPosition(
     p=>send("text",`📍 Konum: https://maps.google.com/?q=${p.coords.latitude.toFixed(6)},${p.coords.longitude.toFixed(6)}`).catch(err=>showErr("Konum: "+err.message)),
     ()=>toast("Konum izni verilmedi.")
   );
 });
-
-// Hava durumu (Open-Meteo, anahtar gerektirmez)
-const wIcon=c=>c===0?"☀️":c<=3?"⛅":c<=48?"🌫️":c<=67?"🌧️":c<=77?"❄️":c<=82?"🌦️":"⛈️";
-on("tWeather","click",()=>{
-  $("mTools").classList.add("hide");
-  if(!navigator.geolocation) return toast("Bu cihaz konumu desteklemiyor.");
-  navigator.geolocation.getCurrentPosition(async p=>{
-    try{
-      const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.coords.latitude}&longitude=${p.coords.longitude}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`);
-      const j=await r.json(), c=j.current;
-      $("wTxt").textContent=`${wIcon(c.weather_code)} ${Math.round(c.temperature_2m)}°C · rüzgar ${Math.round(c.wind_speed_10m)} km/sa`;
-      $("mWeather").classList.remove("hide");
-    }catch(err){showErr("Hava: "+err.message);}
-  },()=>toast("Konum izni gerekli."));
-});
-
-// Süreli mesaj
-on("tEph","click",()=>{
-  const v=prompt("Mesajlar kaç saniye sonra silinsin? (0 = kapalı, örn. 10, 30, 60, 300)",String(ephSec));
-  if(v===null) return;
-  const n=Math.max(0,Math.min(3600,Math.floor(+v||0)));
-  ephSec=n;
-  $("mTools").classList.add("hide");
-  $("ephRow").classList.toggle("hide",!n);
-  $("ephTxt").textContent=n+" sn";
-  toast(n?`Gönderilen mesajlar ${n} sn sonra silinecek.`:"Süreli mesaj kapalı.");
-});
-on("ephChip","click",()=>{ ephSec=0; $("ephRow").classList.add("hide"); toast("Süreli mesaj kapalı."); });
-
-// Ruh hali
-on("tMood","click",()=>{ $("moodIn").value=me.mood||""; openTool("mMood"); });
-on("moodGo","click",async()=>{
-  const v=$("moodIn").value.trim().slice(0,40);
-  try{
-    await updateDoc(doc(db,"users",me.id),{mood:v});
-    me={...me,mood:v}; localStorage.setItem("kisir_me",JSON.stringify(me));
-    $("mMood").classList.add("hide"); toast("Ruh halin güncellendi ✓");
-  }catch(err){showErr("Ruh hali: "+err.message);}
-});
+on("bEmo","click",()=>$("emoji").classList.toggle("hide"));
 
 // ---------- Yazıyor / görüldü / çevrimiçi ----------
 function watchPeer(f){
@@ -1214,7 +1034,6 @@ function openRoom(f){
     if(JSON.stringify(t)!==JSON.stringify(chatTheme)){chatTheme=t;applyChatTheme();}
     if(rState) syncRoom(rState);
     paintRoom();
-    if($("mList").classList.contains("hide")===false) paintList();
     const so=rState?.seen?.[otherId(f)]||0;
     if(so!==lastSeenOther){lastSeenOther=so; if(lastMsg) renderMsgs(lastMsg);}
     paintStatus();
@@ -1545,7 +1364,6 @@ function openMusic(mode){
   $("mMusic").classList.remove("hide");
   $("msQ").focus();
 }
-on("tMusic","click",()=>{ $("mTools").classList.add("hide"); openMusic("tool"); });
 on("bMusicSend","click",()=>{
   if(!act) return toast("Önce bir sohbet açın.");
   openMusic("chat");
@@ -1607,10 +1425,6 @@ document.addEventListener("pointerdown",()=>{
   if("Notification" in window&&Notification.permission==="default") Notification.requestPermission().catch(()=>{});
 },{once:true});
 
-// ---------- Alt çubuk ----------
-on("fTools","click",()=>$("mTools").classList.remove("hide"));
-on("tEmoji","click",()=>{ $("mTools").classList.add("hide"); $("emoji").classList.remove("hide"); });
-
 // ---------- Ana ekran ----------
 function paintHome(){
   if(!me) return;
@@ -1619,8 +1433,6 @@ function paintHome(){
   $("hDate").textContent=new Date().toLocaleDateString("tr-TR",{weekday:"long",day:"numeric",month:"long"});
   $("hFriends").textContent=friendCount;
 }
-on("hAI","click",()=>{ aiLoad(); $("mAI").classList.remove("hide"); });
-on("hTools","click",()=>$("mTools").classList.remove("hide"));
 on("hProfile","click",openProfile);
 on("hLook","click",()=>{ paintSettings(); $("mSettings").classList.remove("hide"); });
 
