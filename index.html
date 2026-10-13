@@ -1,51 +1,521 @@
-<!doctype html>
-<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090b12"><title>KISIRAPP</title>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kısır</title>
 <style>
-:root{color-scheme:dark;--bg:#090b12;--panel:#111521;--panel2:#171d2b;--line:#252c3d;--muted:#8993aa;--txt:#f4f6fc;--acc:#8272ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 25% 0,#191733 0,transparent 42%),var(--bg);color:var(--txt);font:14px Inter,system-ui,Segoe UI,sans-serif}button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0}input,textarea{background:#0c101a;border:1px solid var(--line);border-radius:12px;padding:12px;outline:none;width:100%}input:focus,textarea:focus{border-color:var(--acc)}button:focus-visible{outline:2px solid var(--acc)}.hide,[hidden]{display:none!important}.btn{background:linear-gradient(135deg,#8a70ff,#5b6cff);border-radius:12px;padding:11px 15px;font-weight:750}.soft{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px}.muted{color:var(--muted)}.tiny{font-size:11px}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#48d5ee,#8c67ff);font-weight:950;font-size:20px;color:white}.auth{min-height:100dvh;display:grid;place-items:center;padding:18px}.authbox{width:min(420px,100%);background:#111521eF;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 24px 80px #0008}.brand{display:flex;gap:12px;align-items:center;font-size:21px;font-weight:900;letter-spacing:.5px}.field{display:grid;gap:7px;margin-top:13px}.app{height:100dvh;max-width:1700px;margin:auto;padding:12px;display:grid;grid-template-columns:235px minmax(0,1fr) 285px;gap:12px}.panel{background:color-mix(in srgb,var(--panel) 96%,transparent);border:1px solid var(--line);border-radius:20px;min-width:0;overflow:hidden}.left,.right{display:flex;flex-direction:column}.brandline{padding:18px;display:flex;align-items:center;gap:10px;font-size:18px;font-weight:900}.miniLogo{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#48d5ee,#8c67ff);display:grid;place-items:center}.section{padding:14px 15px 6px;color:var(--muted);font-size:10px;font-weight:850;letter-spacing:1.5px}.nav{display:flex;align-items:center;gap:11px;margin:3px 8px;padding:12px;border-radius:12px;color:#c9cfe0;cursor:pointer}.nav:hover,.nav.active{background:#272542;color:white}.nav .ico{width:23px;text-align:center;font-size:17px}.profile{margin-top:auto;padding:13px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}.av{width:39px;height:39px;flex-shrink:0;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#3bc9df,#8864ff);font-weight:850;overflow:hidden}.av img{width:100%;height:100%;object-fit:cover}.center{display:flex;flex-direction:column;min-height:0}.top{height:64px;display:flex;align-items:center;gap:12px;padding:0 19px;border-bottom:1px solid var(--line)}.top h2{font-size:16px;margin:0}.spacer{flex:1}.views{flex:1;min-height:0;overflow:auto;padding:18px}.feedIntro{padding:20px;border-radius:18px;background:linear-gradient(120deg,#26204a,#182638);margin-bottom:16px}.stories{display:flex;gap:15px;overflow:auto;padding:14px 0}.story{text-align:center;min-width:62px;font-size:11px}.ring{width:54px;height:54px;margin:0 auto 6px;border-radius:18px;padding:3px;background:linear-gradient(135deg,#5ee5eb,#9267ff)}.ring .av{width:100%;height:100%;border:3px solid var(--panel);border-radius:15px}.post{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:15px;margin:10px 0}.postHead{display:flex;align-items:center;gap:10px}.postArt{margin-top:13px;border-radius:13px;min-height:145px;display:grid;place-items:center;font-size:48px;background:linear-gradient(135deg,#1b3041,#31234e)}.actions{display:flex;gap:8px;margin-top:12px}.chatLayout{height:100%;display:grid;grid-template-columns:minmax(0,1fr);min-height:0}.chatHead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}.msgs{padding:16px;overflow:auto;display:flex;flex-direction:column;gap:11px;min-height:0;flex:1;background-position:center;background-size:cover}.msg{display:flex;gap:9px;align-items:flex-start;max-width:88%}.msg.mine{align-self:flex-end;flex-direction:row-reverse}.bubble{padding:10px 12px;border-radius:14px;background:#202638;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}.mine .bubble{background:linear-gradient(135deg,var(--chatacc,var(--acc)),#5e64d9)}.meta{font-size:10px;color:#aab2c6;margin-top:4px;display:flex;gap:7px;align-items:center}.meta button{background:transparent;padding:0;color:inherit}.compose{padding:12px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center}.compose input{flex:1}.pinbar{padding:9px 14px;background:#1c2034;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center}.friend{display:flex;align-items:center;gap:10px;padding:10px;margin:3px 8px;border-radius:13px;cursor:pointer}.friend:hover,.friend.active{background:#25243e}.friend .ftext{min-width:0;flex:1}.friend b,.friend small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dot{width:7px;height:7px;background:#4dd9a4;border-radius:50%;display:inline-block}.rightScroll{overflow:auto;flex:1}.empty{display:grid;place-items:center;text-align:center;color:var(--muted);height:100%;padding:30px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:12px 16px;border:1px solid var(--line);background:#191e2d;border-radius:12px;z-index:9}.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:16px;z-index:8}.modalbox{width:min(540px,100%);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px}.drawCanvas{width:100%;height:260px;touch-action:none;background:#fff;border-radius:12px;display:block}.mobilebar{display:none}
-@media(max-width:1050px){.app{grid-template-columns:205px minmax(0,1fr)}.right{display:none}}@media(max-width:700px){.app{display:block;padding:0;height:100dvh}.left{display:none}.center{height:100dvh;border-radius:0}.top{height:57px}.mobilebar{display:flex;gap:7px;padding:8px;border-bottom:1px solid var(--line)}.mobilebar button{flex:1}.views{padding:12px}.right{display:none}.chatHead{padding:10px}.compose{padding:9px}.compose .soft{padding:9px}.msgs{padding:12px}.msg{max-width:94%}}
-</style></head><body>
-<section id="auth" class="auth"><div class="authbox"><div class="brand"><div class="logo">K</div><div>KISIRAPP<div class="muted tiny" style="font-weight:500;letter-spacing:0">Sosyal alanın, tek yerde.</div></div></div><h2 style="margin:26px 0 5px">Hesabına giriş yap</h2><p class="muted" style="margin-top:0">Arkadaşlarınla sohbet et, topluluğunu bul.</p><div class="field"><label>Kullanıcı adı</label><input id="username" autocomplete="username" placeholder="kullaniciadi" maxlength="24"></div><div class="field"><label>Şifre</label><input id="password" type="password" autocomplete="current-password" placeholder="Şifren" maxlength="100"></div><label style="display:flex;gap:8px;align-items:center;margin:14px 0;font-size:12px"><input id="terms" type="checkbox" style="width:auto">Yeni hesap oluşturmayı kabul ediyorum.</label><div style="display:flex;gap:9px"><button class="btn" id="login" style="flex:1">Giriş yap</button><button class="soft" id="register" style="flex:1">Kayıt ol</button></div><p id="authStatus" class="muted tiny"></p></div></section>
-<section id="app" class="app hide"><aside class="panel left"><div class="brandline"><div class="miniLogo">K</div>KISIR<span style="color:#9b83ff">APP</span></div><div class="section">MENÜ</div><div class="nav active" data-view="feed"><span class="ico">⌂</span>Keşfet</div><div class="nav" data-view="chat"><span class="ico">◌</span>Mesajlar</div><div class="nav" data-view="communities"><span class="ico">▦</span>Topluluklar</div><div class="section">ARKADAŞLAR</div><div id="friendList" class="rightScroll"></div><div class="profile"><div class="av" id="myAv">K</div><div style="min-width:0;flex:1"><b id="myName">Kullanıcı</b><div class="muted tiny" id="myTag"></div></div><button class="soft" id="logout" title="Çıkış">↗</button></div></aside>
-<main class="panel center"><div class="top"><h2 id="pageTitle">Keşfet</h2><div class="spacer"></div><button class="soft" id="addFriend">＋ Arkadaş ekle</button></div><div class="mobilebar"><button class="soft" data-view="feed">Keşfet</button><button class="soft" data-view="chat">Mesajlar</button><button class="soft" data-view="communities">Topluluklar</button></div>
-<div id="feedView" class="views"><div class="feedIntro"><div class="muted tiny">KISIRAPP / SOSYAL</div><h2 id="welcome" style="margin:8px 0">Hoş geldin 👋</h2><div class="muted">Sohbet et, paylaş, kendi topluluğunu kur.</div></div><div class="stories"><div class="story"><div class="ring"><div class="av">＋</div></div>Hikâyen</div><div class="story"><div class="ring"><div class="av">🎮</div></div>Oyun</div><div class="story"><div class="ring"><div class="av">🎧</div></div>Müzik</div><div class="story"><div class="ring"><div class="av">💬</div></div>Sohbet</div></div><div class="post"><div class="postHead"><div class="av">K</div><div><b>KISIRAPP</b><div class="muted tiny">Topluluğa hoş geldin</div></div></div><div class="postArt">✦　💬　✦</div><h3>Birlikte daha sosyal.</h3><p class="muted">Arkadaş ekleyerek gerçek zamanlı özel sohbeti başlatabilirsin. Mesajlarda sabitleme, ortak tema ve çizim gönderme özellikleri hazır.</p><div class="actions"><button class="soft" id="feedAdd">＋ Arkadaş ekle</button><button class="soft" id="feedChat">Mesajlara git →</button></div></div></div>
-<div id="chatView" class="views hide" style="padding:0"><div id="noChat" class="empty"><div><div style="font-size:40px">✦</div><h3>Bir sohbet seç</h3><p>Arkadaş listesinden birini seç veya yeni arkadaş ekle.</p><button class="btn" id="noChatAdd">Arkadaş ekle</button></div></div><div id="chatBox" class="chatLayout hide"><div class="chatHead"><button class="soft" id="backChat" style="display:none">‹</button><div class="av" id="peerAv">K</div><div><b id="peerName">Sohbet</b><div class="muted tiny" id="peerStatus">● bağlantı bekleniyor</div></div><div class="spacer"></div><button class="soft" id="themeBtn" title="Ortak sohbet teması">🎨</button><button class="soft" id="pinJump" title="Sabit mesaja git">📌</button><button class="soft" id="drawBtn" title="Çiziktir">✎</button></div><div id="pinBar" class="pinbar hide"><span>📌</span><span id="pinText" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span><button class="soft" id="unpin">Kaldır</button></div><div id="messages" class="msgs"><div class="empty">İlk mesajı gönder 👋</div></div><form id="sendForm" class="compose"><button type="button" class="soft" id="emojiBtn">☺</button><input id="messageInput" placeholder="Mesaj yaz..." maxlength="3000" autocomplete="off"><button class="btn">Gönder</button></form></div></div>
-<div id="communitiesView" class="views hide"><div class="feedIntro"><h2>Topluluklar</h2><p class="muted">Oyun, müzik ve sohbet için alanını seç.</p></div><div class="post"><h3>🎮 Oyun Dünyası</h3><p class="muted">Oyun arkadaşları ve ekip arayanlar.</p><button class="btn community" data-name="Oyun Dünyası">Sohbeti aç</button></div><div class="post"><h3>🎧 Müzik Odası</h3><p class="muted">Yeni parçalar, beatler ve müzik muhabbeti.</p><button class="btn community" data-name="Müzik Odası">Sohbeti aç</button></div><div class="post"><h3>💬 Sohbet Muhabbet</h3><p class="muted">Günlük muhabbet için.</p><button class="btn community" data-name="Sohbet Muhabbet">Sohbeti aç</button></div><p class="muted tiny">Bu sürümde topluluk kartları arayüzdür; Firestore kurallarında topluluk koleksiyonu bulunmadığı için gerçek ortak kanal mesajları eklenmedi.</p></div></main>
-<aside class="panel right"><div class="brandline">Hızlı erişim</div><div class="section">ARKADAŞ BUL</div><div style="padding:10px 12px;display:flex;gap:7px"><input id="quickSearch" placeholder="Kullanıcı adı..." style="min-width:0"><button class="soft" id="searchBtn">⌕</button></div><div class="section">HESABIN</div><div style="padding:14px"><div class="feedIntro"><b id="sideName">Kullanıcı</b><p class="muted tiny">KISIRAPP hesabın aktif.</p><button class="soft" id="sideAdd">＋ Arkadaş ekle</button></div><p class="muted tiny">Mesajların ve ortak sohbet temaları Firebase Firestore üzerinden eşitlenir.</p></div></aside></section>
-<div id="addModal" class="modal hide"><div class="modalbox"><div style="display:flex;align-items:center"><h3 style="margin:0">Arkadaş ekle</h3><span class="spacer"></span><button class="soft" data-close="addModal">✕</button></div><p class="muted tiny">Kullanıcı adını ve 4 haneli etiketini gir. Örnek: mert#1234</p><div class="field"><label>Kullanıcı#Etiket</label><input id="friendCode" placeholder="kullanici#1234"></div><p id="friendStatus" class="muted tiny"></p><button class="btn" id="sendRequest" style="width:100%;margin-top:10px">İstek gönder</button></div></div>
-<div id="themeModal" class="modal hide"><div class="modalbox"><div style="display:flex;align-items:center"><h3 style="margin:0">Ortak sohbet teması</h3><span class="spacer"></span><button class="soft" data-close="themeModal">✕</button></div><p class="muted tiny">Değişiklik iki tarafta da görünür.</p><div class="field"><label>Mesaj rengi</label><input id="themeColor" type="color" value="#8272ff"></div><div class="field"><label>Arka plan görseli URL'si (isteğe bağlı)</label><input id="themeBg" placeholder="https://...jpg"></div><button class="btn" id="saveTheme" style="width:100%;margin-top:14px">Temayı kaydet</button><button class="soft" id="resetTheme" style="width:100%;margin-top:8px">Temayı sıfırla</button></div></div>
-<div id="drawModal" class="modal hide"><div class="modalbox"><div style="display:flex;align-items:center"><h3 style="margin:0">Çiziktir</h3><span class="spacer"></span><button class="soft" data-close="drawModal">✕</button></div><p class="muted tiny">Parmağınla veya fareyle çiz.</p><canvas id="canvas" class="drawCanvas" width="900" height="450"></canvas><div style="display:flex;gap:8px;margin-top:10px"><button class="soft" id="clearDraw">Temizle</button><input id="drawColor" type="color" value="#242424" style="width:55px;padding:4px"><button class="btn" id="sendDraw" style="flex:1">Çizimi gönder</button></div></div></div><div id="toast" class="toast hide"></div>
+:root{--bg:#000;--line:#262626;--mut:#8e8e8e;--acc:#0095f6;--bub:#262626;--txt:#f5f5f5;--field:#121212;--hov:#1c1c1c;--panel:#0a0a0a}
+.light{--bg:#fff;--line:#dbdbdb;--mut:#737373;--bub:#efefef;--txt:#111;--field:#f2f2f2;--hov:#f0f0f0;--panel:#fafafa}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+.hide{display:none!important}
+#app{display:grid;grid-template-columns:300px 1fr;height:100dvh}
+aside{border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.pad{padding:14px;border-bottom:1px solid var(--line)}
+.inp{width:100%;background:var(--field);border:1px solid var(--line);border-radius:999px;padding:10px 14px;outline:none;font-size:14px}
+.btn{background:var(--acc);border-radius:10px;padding:9px 14px;font-weight:600;color:#fff}
+.btn2{background:var(--bub);border-radius:10px;padding:9px 14px;font-weight:600}
+.ib{width:38px;height:38px;border-radius:50%;font-size:18px;display:grid;place-items:center;flex-shrink:0}
+.ib:hover,.chat:hover,.btn2:hover{background:var(--hov)}
+.up{cursor:pointer}
+.chats{flex:1;overflow:auto;padding:6px}
+.chat{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;cursor:pointer}
+.chat.on{background:var(--hov)}
+.av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;flex-shrink:0;color:#fff}
+.ell{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+main{display:flex;flex-direction:column;min-height:0;position:relative}
+.empty{margin:auto;color:var(--mut);text-align:center;padding:20px}
+#chatView{display:flex;flex-direction:column;flex:1;min-height:0}
+header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+#player{display:flex;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+#pTitle{flex:1;font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#msgs{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:6px}
+.m{max-width:72%;display:flex;flex-direction:column;align-self:flex-start}
+.m.me{align-self:flex-end;align-items:flex-end}
+.bub{background:var(--bub);border-radius:20px;padding:8px 13px;word-break:break-word}
+.m.me .bub{background:var(--acc);color:#fff}
+.bub img,.bub video{max-width:280px;max-height:320px;border-radius:12px;display:block}
+.bub audio{max-width:240px;height:36px}
+.bub a{color:inherit}
+.tm{font-size:10px;color:var(--mut);margin:2px 6px}
+.typing{padding:0 16px 6px;font-size:12px;color:var(--mut);min-height:18px}
+footer{display:flex;align-items:center;gap:6px;padding:10px;border-top:1px solid var(--line)}
+footer .inp{flex:1}
+#screen{position:absolute;top:64px;right:14px;width:min(520px,60%);background:#000;border-radius:14px;overflow:hidden;box-shadow:0 10px 40px #000;z-index:5}
+#screen video{width:100%;display:block}
+#screen .bar{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;font-size:12px;background:#111;color:#fff}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:grid;place-items:center;z-index:20}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;width:min(360px,92vw);display:flex;flex-direction:column;gap:12px}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);cursor:pointer}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:50;background:var(--bub);padding:10px 16px;border-radius:12px;max-width:90vw;text-align:center}
+@media(max-width:760px){
+  #app{grid-template-columns:1fr}
+  #app.open aside{display:none}
+  #app:not(.open) main{display:none}
+  #app:not(.open) aside{display:flex}
+  #screen{width:94%;right:3%}
+}
+</style>
+</head>
+<body>
+
+<div id="login" class="modal hide">
+  <div class="box" style="text-align:center">
+    <div style="font-size:22px;font-weight:800;letter-spacing:4px">KISIR</div>
+    <input id="nick" class="inp" placeholder="Görünen adınız" maxlength="20">
+    <button class="btn" id="go">Başla</button>
+  </div>
+</div>
+
+<div id="app" class="hide">
+  <aside>
+    <div class="pad" style="display:flex;gap:10px;align-items:center">
+      <div class="av" id="meAv"></div>
+      <div style="flex:1;min-width:0">
+        <div id="meName" class="ell" style="font-weight:700"></div>
+        <div id="meId" class="ell" style="font-size:11px;color:var(--mut);cursor:pointer" title="Kopyala"></div>
+      </div>
+      <button class="ib" id="bSet" title="Tema">🎨</button>
+    </div>
+    <div class="pad" style="display:flex;gap:6px">
+      <input id="addId" class="inp" placeholder="Arkadaşının ID'si" autocomplete="off">
+      <button class="btn" id="bAdd">Ekle</button>
+    </div>
+    <div class="chats" id="chats"></div>
+  </aside>
+
+  <main>
+    <div class="empty" id="empty">Soldan bir sohbet seçin ya da arkadaşınızın ID'si ile yeni sohbet başlatın.</div>
+    <div id="chatView" class="hide">
+      <header>
+        <button class="ib" id="bBack">←</button>
+        <div class="av" id="pAv" style="width:36px;height:36px;font-size:14px"></div>
+        <div id="pName" class="ell" style="flex:1;font-weight:700"></div>
+        <button class="ib" id="bMusic" title="Birlikte dinle">🎵</button>
+        <button class="ib" id="bShare" title="Ekran paylaş">🖥️</button>
+      </header>
+      <div id="player" class="hide">
+        <span id="pTitle">Parça yok</span>
+        <button class="btn2" id="pPlay">▶</button>
+        <label class="btn2 up">📁<input type="file" id="pFile" accept="audio/*" hidden></label>
+      </div>
+      <div id="msgs"></div>
+      <div class="typing" id="typing"></div>
+      <footer>
+        <label class="ib up" title="Fotoğraf, video veya dosya">📎<input type="file" id="file" hidden></label>
+        <button class="ib" id="bRec" title="Sesli mesaj">🎤</button>
+        <input id="txt" class="inp" placeholder="Mesaj yaz…" autocomplete="off">
+        <button class="btn" id="bSend">Gönder</button>
+      </footer>
+    </div>
+  </main>
+</div>
+
+<div id="screen" class="hide">
+  <div class="bar"><span id="scTxt"></span><button id="scClose">✕</button></div>
+  <video id="scVid" autoplay playsinline controls></video>
+</div>
+
+<div id="setModal" class="modal hide">
+  <div class="box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><b>Tema</b><button class="ib" id="setX">✕</button></div>
+    <div id="swatches" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+    <label><input type="checkbox" id="lightT"> Açık tema</label>
+  </div>
+</div>
+
+<div id="toast" class="hide"></div>
+
 <script type="module">
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-import {getFirestore,collection,doc,addDoc,getDocs,query,where,orderBy,onSnapshot,serverTimestamp,updateDoc,setDoc,deleteField} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
-const db=getFirestore(initializeApp({apiKey:'AIzaSyDxe_5d7y1R4aW30uIYu2QQoifJ7aS6uO8',authDomain:'yerlivemillichat.firebaseapp.com',projectId:'yerlivemillichat',storageBucket:'yerlivemillichat.firebasestorage.app',messagingSenderId:'225196502397',appId:'1:225196502397:web:ac2741bd9b54595a6ff014'}));
-const $=id=>document.getElementById(id), AV='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let me=null,active=null,unsubFriends=null,unsubChat=null,unsubRoom=null,unsubPeer=null,roomRef=null,roomState=null,pinnedId=null,docsCache=[];
-const myId=()=>`${me.username}#${me.tag}`, otherId=f=>`${f.friendUsername}#${f.friendTag}`, roomOf=f=>[myId(),otherId(f)].sort().join('__');
-function toast(s){$('toast').textContent=s;$('toast').classList.remove('hide');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.add('hide'),2600)}
-function err(s){toast(s?.message||String(s))}
-async function hash(u,p){const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(`${u}:${p}:kisir`));return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('')}
-async function auth(mode){const u=$('username').value.trim().toLowerCase(),p=$('password').value.trim();if(!/^[a-z0-9_.]{3,24}$/.test(u)||p.length<4){$('authStatus').textContent='Kullanıcı adı 3-24 karakter; şifre en az 4 karakter olmalı.';return}try{const q=await getDocs(query(collection(db,'users'),where('username','==',u))),pw=await hash(u,p);if(mode==='register'){if(!$('terms').checked)return $('authStatus').textContent='Kayıt kutusunu işaretle.';if(!q.empty)return $('authStatus').textContent='Bu kullanıcı adı alınmış.';const tag=String(1000+Math.floor(Math.random()*9000)),r=await addDoc(collection(db,'users'),{username:u,tag,pw,avatarUrl:AV,displayName:'',bio:'',createdAt:serverTimestamp()});loginUser({id:r.id,username:u,tag,avatarUrl:AV,displayName:''});}else{if(q.empty)return $('authStatus').textContent='Hesap bulunamadı.';const d=q.docs[0],x=d.data();if(x.pw!==pw)return $('authStatus').textContent='Şifre hatalı.';loginUser({id:d.id,username:x.username,tag:x.tag,avatarUrl:x.avatarUrl||AV,displayName:x.displayName||''});}}catch(e){$('authStatus').textContent='Firebase hatası: '+e.message}}
-function loginUser(u){me=u;localStorage.setItem('kisir_me',JSON.stringify(u));$('auth').classList.add('hide');$('app').classList.remove('hide');$('myName').textContent=u.displayName||u.username;$('sideName').textContent=u.displayName||u.username;$('myTag').textContent='@'+u.username+' #'+u.tag;$('myAv').textContent=(u.displayName||u.username)[0].toUpperCase();$('welcome').textContent='Hoş geldin, '+(u.displayName||u.username)+' 👋';watchFriends();heartbeat();}
-$('login').onclick=()=>auth('login');$('register').onclick=()=>auth('register');$('password').onkeydown=e=>{if(e.key==='Enter')auth('login')};$('logout').onclick=()=>{localStorage.removeItem('kisir_me');location.reload()};
-async function heartbeat(){if(!me)return;try{await updateDoc(doc(db,'users',me.id),{lastSeen:serverTimestamp()})}catch{}}
-function watchFriends(){unsubFriends?.();unsubFriends=onSnapshot(query(collection(db,'friends'),where('owner','==',me.username)),s=>{const list=$('friendList');list.innerHTML='';let fs=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.status==='accepted');fs.sort((a,b)=>(b.lastActivity?.seconds||0)-(a.lastActivity?.seconds||0));const pending=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>x.status==='pending');pending.forEach(f=>{const el=document.createElement('div');el.className='friend';el.innerHTML=`<div class="av">${esc((f.friendUsername||'?')[0].toUpperCase())}</div><div class="ftext"><b>${esc(f.friendUsername)}</b><small class="muted">Arkadaşlık isteği</small></div><button class="soft" title="Kabul et">✓</button>`;el.querySelector('button').onclick=async e=>{e.stopPropagation();try{await updateDoc(doc(db,'friends',f.id),{status:'accepted'});await addDoc(collection(db,'friends'),{owner:f.friendUsername,friendUsername:me.username,friendTag:me.tag,avatarUrl:me.avatarUrl||AV,displayName:me.displayName||'',status:'accepted',createdAt:serverTimestamp()});toast('Arkadaş eklendi')}catch(x){err(x)}};list.append(el)});if(!fs.length&&!pending.length)list.innerHTML='<p class="muted tiny" style="padding:12px">Henüz arkadaş yok.</p>';fs.forEach(f=>{const el=document.createElement('div');el.className='friend'+(active&&otherId(active)===otherId(f)?' active':'');el.innerHTML=`<div class="av">${esc((f.displayName||f.friendUsername)[0]?.toUpperCase())}</div><div class="ftext"><b>${esc(f.displayName||f.friendUsername)}</b><small class="muted">@${esc(f.friendUsername)} #${esc(f.friendTag)}</small></div>`;el.onclick=()=>openChat(f);list.append(el)});$('friendList').dataset.count=fs.length;},e=>err(e));}
-function modal(id,show=true){$(id).classList.toggle('hide',!show)}$('addFriend').onclick=$('feedAdd').onclick=$('noChatAdd').onclick=$('sideAdd').onclick=()=>modal('addModal');$('feedChat').onclick=()=>switchView('chat');
-document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>modal(b.dataset.close,false));
-$('sendRequest').onclick=async()=>{const code=$('friendCode').value.trim().replace(/^@/,'').split('#'),u=(code[0]||'').toLowerCase(),tag=code[1];if(!u||!/^\d{4}$/.test(tag||''))return $('friendStatus').textContent='Format: kullanici#1234';try{const s=await getDocs(query(collection(db,'users'),where('username','==',u),where('tag','==',tag)));if(s.empty)return $('friendStatus').textContent='Kullanıcı bulunamadı.';if(u===me.username&&tag===me.tag)return $('friendStatus').textContent='Kendini ekleyemezsin.';const f=s.docs[0].data(),own=await getDocs(query(collection(db,'friends'),where('owner','==',me.username),where('friendUsername','==',u)));if(!own.empty)return $('friendStatus').textContent='İstek veya arkadaşlık zaten mevcut.';await addDoc(collection(db,'friends'),{owner:u,friendUsername:me.username,friendTag:me.tag,avatarUrl:me.avatarUrl||AV,displayName:me.displayName||'',status:'pending',createdAt:serverTimestamp()});$('friendStatus').textContent='İstek gönderildi.';toast('Arkadaşlık isteği gönderildi');}catch(e){$('friendStatus').textContent='Firebase: '+e.message}};
-function switchView(v){['feed','chat','communities'].forEach(x=>$(x+'View').classList.toggle('hide',x!==v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('pageTitle').textContent=({feed:'Keşfet',chat:'Mesajlar',communities:'Topluluklar'})[v]}
-document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>switchView(b.dataset.view));$('searchBtn').onclick=()=>{$('friendCode').value=$('quickSearch').value.trim();modal('addModal')};$('quickSearch').onkeydown=e=>{if(e.key==='Enter')$('searchBtn').click()};
-function openChat(f){active=f;switchView('chat');$('noChat').classList.add('hide');$('chatBox').classList.remove('hide');$('peerName').textContent=f.displayName||f.friendUsername;$('peerAv').textContent=(f.displayName||f.friendUsername)[0].toUpperCase();$('peerStatus').textContent='@'+f.friendUsername+' · mesajlar eşitleniyor';unsubChat?.();unsubRoom?.();unsubPeer?.();docsCache=[];pinnedId=null;$('messages').innerHTML='';const room=roomOf(f);unsubChat=onSnapshot(query(collection(db,'direct_messages'),where('chatRoomId','==',room),orderBy('createdAt','asc')),s=>{docsCache=s.docs;renderMessages();},e=>err(e));roomRef=doc(db,'listen_rooms',room);unsubRoom=onSnapshot(roomRef,s=>{roomState=s.data()||{};applyTheme(roomState.theme);renderPin();});const peerQuery=query(collection(db,'users'),where('username','==',f.friendUsername),where('tag','==',f.friendTag));getDocs(peerQuery).then(s=>{if(!s.empty){const x=s.docs[0].data();$('peerStatus').textContent=x.lastSeen?.toDate?('Son görülme: '+x.lastSeen.toDate().toLocaleString('tr-TR')):'Son görülme bilgisi yok';}}).catch(()=>{});$('messages').scrollTop=$('messages').scrollHeight;}
-function renderMessages(){const box=$('messages'),wasBottom=box.scrollHeight-box.scrollTop-box.clientHeight<130;box.innerHTML='';if(!docsCache.length){box.innerHTML='<div class="empty">Henüz mesaj yok. İlk mesajı gönder 👋</div>';return}docsCache.forEach(d=>{const m=d.data(),mine=m.sender===myId(),t=m.createdAt?.toDate?.().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})||'şimdi';if(m.isPinned)pinnedId=d.id;const el=document.createElement('div');el.className='msg'+(mine?' mine':'');let content=m.type==='image'?`<img src="${esc(m.text)}" style="max-width:min(280px,65vw);border-radius:10px;display:block">`:esc(m.text||'');el.innerHTML=`<div class="av">${mine?esc((me.displayName||me.username)[0].toUpperCase()):esc((active.displayName||active.friendUsername)[0].toUpperCase())}</div><div><div class="bubble">${content}</div><div class="meta"><span>${t}</span><button data-pin="${d.id}" title="Sabitle / kaldır">📌</button>${mine?`<button data-delete="${d.id}" title="Sil">×</button>`:''}</div></div>`;box.append(el)});renderPin();if(wasBottom||box.children.length<2)box.scrollTop=box.scrollHeight;}
-$('messages').onclick=async e=>{const b=e.target.closest('button');if(!b||!active)return;try{if(b.dataset.pin){const d=docsCache.find(x=>x.id===b.dataset.pin);await updateDoc(doc(db,'direct_messages',b.dataset.pin),{isPinned:!d?.data().isPinned})}if(b.dataset.delete){if(confirm('Mesaj silinsin mi?')){const {deleteDoc}=await import('https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js');await deleteDoc(doc(db,'direct_messages',b.dataset.delete))}}}catch(x){err(x)}};
-function renderPin(){const p=docsCache.find(d=>d.data().isPinned);pinnedId=p?.id||null;$('pinBar').classList.toggle('hide',!p);if(p)$('pinText').textContent=p.data().text||'Görsel mesaj';}
-$('pinJump').onclick=()=>{if(!pinnedId)return toast('Sabitlenmiş mesaj yok.');const e=$('messages').querySelector(`[data-pin="${pinnedId}"]`)?.closest('.msg');e?.scrollIntoView({behavior:'smooth',block:'center'})};$('unpin').onclick=async()=>{if(pinnedId)try{await updateDoc(doc(db,'direct_messages',pinnedId),{isPinned:false})}catch(e){err(e)}};
-$('sendForm').onsubmit=async e=>{e.preventDefault();const text=$('messageInput').value.trim();if(!text||!active)return;const room=roomOf(active);try{await addDoc(collection(db,'direct_messages'),{chatRoomId:room,sender:myId(),to:otherId(active),text,type:'text',name:'',isAnon:false,isPinned:false,createdAt:serverTimestamp()});$('messageInput').value='';await setDoc(roomRef,{chatRoomId:room,by:myId(),updatedAt:serverTimestamp()},{merge:true});}catch(x){err(x)}};
-$('emojiBtn').onclick=()=>{$('messageInput').value+=' 😀';$('messageInput').focus()};
-function applyTheme(t){const box=$('messages');if(!t){box.style.backgroundImage='';box.style.removeProperty('--chatacc');return}box.style.setProperty('--chatacc',t.acc||'#8272ff');box.style.backgroundImage=t.bg?`linear-gradient(#090b1288,#090b1288),url("${String(t.bg).replace(/"/g,'%22')}")`:''}
-$('themeBtn').onclick=()=>{if(!active)return;const t=roomState?.theme||{};$('themeColor').value=t.acc||'#8272ff';$('themeBg').value=t.bg||'';modal('themeModal')};$('saveTheme').onclick=async()=>{try{await setDoc(roomRef,{chatRoomId:roomOf(active),theme:{acc:$('themeColor').value,bg:$('themeBg').value.trim()}},{merge:true});modal('themeModal',false);toast('Ortak tema güncellendi')}catch(e){err(e)}};$('resetTheme').onclick=async()=>{try{await setDoc(roomRef,{chatRoomId:roomOf(active),theme:{}},{merge:true});modal('themeModal',false)}catch(e){err(e)}};
-$('drawBtn').onclick=()=>{if(!active)return;modal('drawModal');clearCanvas()};const cv=$('canvas'),ctx=cv.getContext('2d');let drawing=false;function clearCanvas(){ctx.fillStyle='#fff';ctx.fillRect(0,0,cv.width,cv.height)}clearCanvas();function point(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height}}cv.onpointerdown=e=>{drawing=true;cv.setPointerCapture(e.pointerId);const p=point(e);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.strokeStyle=$('drawColor').value;ctx.lineWidth=5;ctx.lineCap='round'};cv.onpointermove=e=>{if(!drawing)return;const p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke()};cv.onpointerup=()=>drawing=false;$('clearDraw').onclick=clearCanvas;$('sendDraw').onclick=async()=>{if(!active)return;try{const text=cv.toDataURL('image/jpeg',.72);if(text.length>700000)return toast('Çizim çok büyük; daha sade çiz.');await addDoc(collection(db,'direct_messages'),{chatRoomId:roomOf(active),sender:myId(),to:otherId(active),text,type:'image',name:'çizim.jpg',isAnon:false,isPinned:false,createdAt:serverTimestamp()});modal('drawModal',false)}catch(e){err(e)}};
-$('backChat').onclick=()=>{unsubChat?.();active=null;$('chatBox').classList.add('hide');$('noChat').classList.remove('hide')};document.querySelectorAll('.community').forEach(b=>b.onclick=()=>toast('Topluluk: '+b.dataset.name+' — ortak kanal için Firestore kuralı/collection gerekir.'));
-window.addEventListener('beforeunload',()=>{unsubFriends?.();unsubChat?.();unsubRoom?.();unsubPeer?.()});
-try{const saved=JSON.parse(localStorage.getItem('kisir_me')||'null');if(saved?.id)loginUser(saved)}catch{}
-</script></body></html>
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getFirestore,doc,getDoc,setDoc,updateDoc,deleteDoc,addDoc,collection,query,where,orderBy,onSnapshot,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import {getStorage,ref,uploadBytes,getDownloadURL} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+
+const app=initializeApp({
+  apiKey:"AIzaSyDxe_5d7y1R4aW30uIYu2QQoifJ7aS6uO8",
+  authDomain:"yerlivemillichat.firebaseapp.com",
+  projectId:"yerlivemillichat",
+  storageBucket:"yerlivemillichat.firebasestorage.app",
+  messagingSenderId:"225196502397",
+  appId:"1:225196502397:web:ac2741bd9b54595a6ff014"
+});
+const db=getFirestore(app), storage=getStorage(app);
+
+// ---------- Yardımcılar ----------
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const COLORS=["#0095f6","#8e5cf5","#10b981","#f43f5e","#f59e0b","#ec4899"];
+const colorOf=s=>COLORS[[...String(s)].reduce((a,c)=>a+c.charCodeAt(0),0)%COLORS.length];
+const newId=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+const RTC={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
+function toast(t){const e=$("toast");e.textContent=t;e.classList.remove("hide");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.add("hide"),2500);}
+const fail=prefix=>err=>{console.error(err);toast(prefix+": "+(err?.message||err));};
+
+// Fotoğrafı küçült (GIF'e dokunma). Hata olursa orijinali döndür.
+async function shrink(f){
+  if(!f.type.startsWith("image/")||f.type==="image/gif") return f;
+  try{
+    const bmp=await createImageBitmap(f);
+    const s=Math.min(1,1600/Math.max(bmp.width,bmp.height));
+    const c=document.createElement("canvas");
+    c.width=Math.round(bmp.width*s); c.height=Math.round(bmp.height*s);
+    c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
+    bmp.close?.();
+    return await new Promise(r=>c.toBlob(b=>r(b||f),"image/jpeg",0.8));
+  }catch{ return f; }
+}
+
+// ---------- Durum ----------
+let me=null, uid=null, started=false;
+let cur=null, otherId=null;
+let chatList=[], users={};
+const unsubs={chats:null,msgs:null,music:null,chat:null,calls:null};
+const shown=new Set();
+let mState=null, typ={}, typingAt=0, share=null, viewer=null;
+const au=new Audio();
+
+// ---------- Giriş (hesap yok, ID ile) ----------
+const saved=JSON.parse(localStorage.getItem("kisir_me")||"null");
+if(saved){
+  me=saved; uid=saved.id;
+  setDoc(doc(db,"users",uid),{name:me.name},{merge:true}).catch(()=>{});
+  start();
+} else $("login").classList.remove("hide");
+
+async function doLogin(){
+  const n=$("nick").value.trim(); if(!n) return toast("Bir ad yazın");
+  me={id:newId(),name:n}; uid=me.id;
+  try{
+    await setDoc(doc(db,"users",uid),{name:n});
+    localStorage.setItem("kisir_me",JSON.stringify(me));
+    $("login").classList.add("hide"); start();
+  }catch(err){ fail("Giriş")(err); }
+}
+$("go").onclick=doLogin;
+$("nick").onkeydown=e=>{if(e.key==="Enter") doLogin();};
+
+function start(){
+  if(started) return; started=true;
+  $("login").classList.add("hide"); $("app").classList.remove("hide");
+  $("meAv").textContent=me.name[0].toUpperCase(); $("meAv").style.background=colorOf(uid);
+  $("meName").textContent=me.name; $("meId").textContent="ID: "+uid;
+  listChats(); applyTheme();
+}
+$("meId").onclick=()=>{navigator.clipboard?.writeText(uid);toast("ID kopyalandı");};
+window.addEventListener("beforeunload",()=>{ if(share) stopShare(); });
+
+async function profile(id){
+  if(!users[id]){
+    const s=await getDoc(doc(db,"users",id));
+    users[id]=s.exists()?s.data():{name:"Bilinmeyen"};
+  }
+  return users[id];
+}
+
+// ---------- Sohbet listesi ----------
+function listChats(){
+  unsubs.chats?.();
+  unsubs.chats=onSnapshot(query(collection(db,"chats"),where("members","array-contains",uid)),async snap=>{
+    chatList=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .sort((a,b)=>(b.updatedAt?.toMillis?.()||0)-(a.updatedAt?.toMillis?.()||0));
+    for(const c of chatList) await profile(c.members.find(m=>m!==uid));
+    renderChats();
+  },fail("Sohbetler"));
+}
+function renderChats(){
+  const box=$("chats"); box.innerHTML="";
+  if(!chatList.length){ box.innerHTML='<div style="padding:20px;color:var(--mut);text-align:center">Henüz sohbet yok.</div>'; return; }
+  chatList.forEach(c=>{
+    const o=c.members.find(m=>m!==uid), p=users[o]||{name:"Bilinmeyen"};
+    const d=document.createElement("div");
+    d.className="chat"+(cur===c.id?" on":"");
+    d.innerHTML=`<div class="av" style="background:${colorOf(o)}">${esc((p.name||"?")[0].toUpperCase())}</div>
+      <div style="flex:1;min-width:0"><div class="ell" style="font-weight:600">${esc(p.name)}</div>
+      <div class="ell" style="font-size:12px;color:var(--mut)">${esc(c.last||"")}</div></div>`;
+    d.onclick=()=>openChat(o);
+    box.appendChild(d);
+  });
+}
+$("bAdd").onclick=async()=>{
+  const o=$("addId").value.trim();
+  if(!o) return;
+  if(o===uid) return toast("Kendinize sohbet açamazsınız");
+  try{
+    const s=await getDoc(doc(db,"users",o));
+    if(!s.exists()) return toast("Kullanıcı bulunamadı");
+    users[o]=s.data();
+    const id=[uid,o].sort().join("_");
+    await setDoc(doc(db,"chats",id),{members:[uid,o],updatedAt:serverTimestamp()},{merge:true});
+    $("addId").value=""; openChat(o);
+  }catch(err){ fail("Ekleme")(err); }
+};
+$("addId").onkeydown=e=>{if(e.key==="Enter") $("bAdd").click();};
+
+// ---------- Sohbet aç / kapat ----------
+function openChat(o){
+  closeChat(true);
+  cur=[uid,o].sort().join("_"); otherId=o;
+  const p=users[o]||{name:"Bilinmeyen"};
+  $("pName").textContent=p.name;
+  $("pAv").textContent=(p.name||"?")[0].toUpperCase(); $("pAv").style.background=colorOf(o);
+  $("empty").classList.add("hide"); $("chatView").classList.remove("hide"); $("app").classList.add("open");
+  $("msgs").innerHTML=""; shown.clear();
+  const c=cur;
+  unsubs.msgs=onSnapshot(query(collection(db,"chats",c,"msgs"),orderBy("createdAt","asc")),renderMsgs,fail("Mesajlar"));
+  unsubs.music=onSnapshot(doc(db,"chats",c,"state","music"),s=>{mState=s.data()||null;paintMusic();},fail("Müzik"));
+  unsubs.chat=onSnapshot(doc(db,"chats",c),s=>{typ=s.data()?.typing||{};});
+  watchCalls(c);
+  renderChats();
+}
+function closeChat(silent){
+  unsubs.msgs?.(); unsubs.music?.(); unsubs.chat?.(); unsubs.calls?.();
+  cur=null; otherId=null; mState=null; typ={};
+  au.pause(); au.removeAttribute("src"); au.dataset.u="";
+  closeViewer();
+  if(!silent){
+    $("app").classList.remove("open"); $("chatView").classList.add("hide");
+    $("empty").classList.remove("hide"); renderChats();
+  }
+}
+$("bBack").onclick=()=>closeChat(false);
+
+// ---------- Mesajlar ----------
+function renderMsgs(snap){
+  const box=$("msgs");
+  const near=box.scrollHeight-box.scrollTop-box.clientHeight<150;
+  let mine=false;
+  snap.docChanges().forEach(c=>{
+    if(c.type!=="added"||shown.has(c.doc.id)) return;
+    shown.add(c.doc.id);
+    const m=c.doc.data(), isMine=m.from===uid;
+    if(isMine) mine=true;
+    let body;
+    if(m.type==="text") body=esc(m.text).replace(/(https?:\/\/\S+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+    else if(m.type==="image") body=`<img src="${esc(m.url)}" loading="lazy">`;
+    else if(m.type==="video") body=`<video src="${esc(m.url)}" controls preload="metadata"></video>`;
+    else if(m.type==="audio") body=`<audio src="${esc(m.url)}" controls></audio>`;
+    else body=`<a href="${esc(m.url)}" target="_blank" download="${esc(m.name)}">📎 ${esc(m.name)}</a>`;
+    const t=m.createdAt?.toDate?.()?.toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"})||"";
+    const w=document.createElement("div");
+    w.className="m"+(isMine?" me":"");
+    w.innerHTML=`<div class="bub">${body}</div><div class="tm">${t}</div>`;
+    box.appendChild(w);
+  });
+  if(near||mine) box.scrollTop=box.scrollHeight;
+}
+// chat/other parametreleri: gönderim sırasında sohbet değişse bile doğru sohbete yazılır
+async function send(data,chat=cur,other=otherId){
+  if(!chat) return;
+  await addDoc(collection(db,"chats",chat,"msgs"),{from:uid,createdAt:serverTimestamp(),...data});
+  await setDoc(doc(db,"chats",chat),{members:[uid,other],updatedAt:serverTimestamp(),
+    last:data.type==="text"?data.text.slice(0,40):"📎 "+data.type},{merge:true});
+}
+const sendText=async()=>{
+  const t=$("txt").value.trim(); if(!t||!cur) return;
+  $("txt").value="";
+  try{ await send({type:"text",text:t.slice(0,2000)}); }catch(err){ fail("Gönderilemedi")(err); }
+};
+$("bSend").onclick=sendText;
+$("txt").onkeydown=e=>{if(e.key==="Enter") sendText();};
+$("txt").oninput=()=>{
+  if(!cur||Date.now()-typingAt<2500) return;
+  typingAt=Date.now();
+  setDoc(doc(db,"chats",cur),{typing:{[uid]:Date.now()}},{merge:true}).catch(()=>{});
+};
+setInterval(()=>{
+  if(!cur) return;
+  const on=Date.now()-(typ[otherId]||0)<4000;
+  $("typing").textContent=on?`${users[otherId]?.name||""} yazıyor…`:"";
+},800);
+
+async function upload(blob,name,chat=cur){
+  const r=ref(storage,`uploads/${chat}/${Date.now()}_${String(name).replace(/[^\w.\-]/g,"_")}`);
+  await uploadBytes(r,blob);
+  return getDownloadURL(r);
+}
+$("file").onchange=async e=>{
+  const f=e.target.files[0]; e.target.value="";
+  if(!f||!cur) return;
+  if(f.size>100*1024*1024) return toast("En fazla 100 MB");
+  const chat=cur, other=otherId;
+  const type=f.type.startsWith("image/")?"image":f.type.startsWith("video/")?"video":f.type.startsWith("audio/")?"audio":"file";
+  toast("Yükleniyor…");
+  try{
+    const blob=type==="image"?await shrink(f):f;
+    const name=type==="image"?"foto.jpg":f.name;
+    await send({type,url:await upload(blob,name,chat),name},chat,other);
+  }catch(err){ fail("Yükleme")(err); }
+};
+
+// Sesli mesaj
+let rec=null, chunks=[];
+$("bRec").onclick=async()=>{
+  if(rec?.state==="recording"){ rec.stop(); return; }
+  if(!cur) return toast("Önce bir sohbet seçin");
+  const chat=cur, other=otherId;
+  const s=await navigator.mediaDevices?.getUserMedia({audio:true}).catch(()=>null);
+  if(!s) return toast("Mikrofon izni gerekli");
+  chunks=[]; rec=new MediaRecorder(s);
+  rec.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+  rec.onstop=async()=>{
+    s.getTracks().forEach(t=>t.stop());
+    $("bRec").style.color="";
+    const b=new Blob(chunks,{type:rec.mimeType||"audio/webm"});
+    try{ await send({type:"audio",url:await upload(b,"ses.webm",chat),name:"ses"},chat,other); }
+    catch(err){ fail("Ses gönderilemedi")(err); }
+  };
+  rec.start(); $("bRec").style.color="#f43f5e";
+};
+
+// ---------- Birlikte müzik ----------
+// chats/{id}/state/music -> {url,name,playing,pos,at}
+function setMusic(p){ return setDoc(doc(db,"chats",cur,"state","music"),{...p,at:Date.now()},{merge:true}); }
+function paintMusic(){
+  if(!cur) return;
+  const d=mState;
+  if(!d?.url){
+    $("pTitle").textContent="Parça yok"; $("pPlay").textContent="▶";
+    au.pause(); au.removeAttribute("src"); au.dataset.u=""; return;
+  }
+  $("pTitle").textContent=d.name||"Parça";
+  $("pPlay").textContent=d.playing?"⏸":"▶";
+  if(au.dataset.u!==d.url){
+    au.dataset.u=d.url; au.src=d.url;
+    au.onloadedmetadata=seekTo;
+  }
+  seekTo();
+  if(d.playing&&au.paused) au.play().catch(()=>toast("Oynatmak için ▶ düğmesine dokunun"));
+  if(!d.playing&&!au.paused) au.pause();
+}
+function seekTo(){
+  if(!mState) return;
+  const target=mState.playing?mState.pos+(Date.now()-mState.at)/1000:mState.pos;
+  if(Math.abs(au.currentTime-target)>1){ try{au.currentTime=target;}catch{} }
+}
+setInterval(()=>{ if(mState?.playing&&!au.paused) seekTo(); },2000);
+$("bMusic").onclick=()=>{ if(cur) $("player").classList.toggle("hide"); };
+$("pPlay").onclick=()=>{
+  if(!mState?.url) return toast("Önce bir parça ekleyin");
+  setMusic({playing:!mState.playing,pos:au.currentTime||mState.pos}).catch(fail("Müzik"));
+};
+$("pFile").onchange=async e=>{
+  const f=e.target.files[0]; e.target.value="";
+  if(!f||!cur) return;
+  const chat=cur;
+  toast("Müzik yükleniyor…");
+  try{
+    const url=await upload(f,f.name,chat);
+    await setDoc(doc(db,"chats",chat,"state","music"),{url,name:f.name,playing:false,pos:0,at:Date.now()});
+    toast("Parça eklendi ✓");
+  }catch(err){ fail("Müzik")(err); }
+};
+
+// ---------- Ekran paylaşımı (WebRTC, sinyal Firestore) ----------
+function addIce(s,c){ if(s.pc.remoteDescription) s.pc.addIceCandidate(c).catch(()=>{}); else s.pend.push(c); }
+function flush(s){ s.pend.splice(0).forEach(c=>s.pc.addIceCandidate(c).catch(()=>{})); }
+
+$("bShare").onclick=async()=>{
+  if(!cur) return toast("Önce bir sohbet seçin");
+  if(share) return stopShare();
+  let stream;
+  try{ stream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:false}); }
+  catch{ return; }
+  const chat=cur, sid=newId();
+  const callRef=doc(db,"chats",chat,"calls","current");
+  const iceCol=collection(db,"chats",chat,"calls","current","ice");
+  const pc=new RTCPeerConnection(RTC);
+  stream.getTracks().forEach(t=>pc.addTrack(t,stream));
+  const s={pc,stream,sid,chat,pend:[],unsubs:[]};
+  share=s;
+  pc.onicecandidate=e=>{ if(e.candidate) addDoc(iceCol,{sid,from:uid,c:e.candidate.toJSON()}).catch(()=>{}); };
+  stream.getVideoTracks()[0].onended=stopShare;
+  try{
+    const offer=await pc.createOffer(); await pc.setLocalDescription(offer);
+    await setDoc(callRef,{sid,from:uid,offer:{type:offer.type,sdp:offer.sdp},answer:null,at:Date.now()});
+  }catch(err){ stopShare(); return fail("Paylaşım")(err); }
+  s.unsubs.push(onSnapshot(callRef,snap=>{
+    const d=snap.data();
+    if(d?.sid===sid&&d.answer&&!pc.currentRemoteDescription){
+      pc.setRemoteDescription(d.answer).then(()=>flush(s)).catch(()=>{});
+    }
+  }));
+  s.unsubs.push(onSnapshot(iceCol,snap=>snap.docChanges().forEach(c=>{
+    const d=c.doc.data();
+    if(c.type==="added"&&d.sid===sid&&d.from!==uid) addIce(s,d.c);
+  })));
+  toast("Ekran paylaşılıyor. Arkadaşınız otomatik izleyebilir.");
+};
+function stopShare(){
+  if(!share) return;
+  const s=share; share=null;
+  s.stream.getTracks().forEach(t=>t.stop());
+  s.pc.close(); s.unsubs.forEach(u=>u());
+  deleteDoc(doc(db,"chats",s.chat,"calls","current")).catch(()=>{});
+  toast("Paylaşım durduruldu");
+}
+$("scClose").onclick=()=>closeViewer();
+
+function watchCalls(chat){
+  unsubs.calls?.();
+  unsubs.calls=onSnapshot(doc(db,"chats",chat,"calls","current"),async snap=>{
+    const d=snap.data();
+    if(!d||!d.offer){ closeViewer(); return; }
+    if(d.from===uid) return;                  // kendi paylaşımımız
+    if(viewer?.sid===d.sid) return;           // zaten izliyoruz
+    if(Date.now()-d.at>12*3600e3) return;     // bayat oturum
+    closeViewer();
+    const sid=d.sid, pc=new RTCPeerConnection(RTC);
+    const v={pc,sid,pend:[],unsubs:[]}; viewer=v;
+    const name=(await profile(d.from)).name;
+    pc.ontrack=e=>{
+      $("scVid").srcObject=e.streams[0];
+      $("scTxt").textContent=`${name} ekranı`;
+      $("screen").classList.remove("hide");
+    };
+    const iceCol=collection(db,"chats",chat,"calls","current","ice");
+    pc.onicecandidate=e=>{ if(e.candidate) addDoc(iceCol,{sid,from:uid,c:e.candidate.toJSON()}).catch(()=>{}); };
+    v.unsubs.push(onSnapshot(iceCol,s2=>s2.docChanges().forEach(c=>{
+      const x=c.doc.data();
+      if(c.type==="added"&&x.sid===sid&&x.from!==uid&&viewer===v) addIce(v,x.c);
+    })));
+    try{
+      await pc.setRemoteDescription(d.offer);
+      flush(v);
+      const ans=await pc.createAnswer(); await pc.setLocalDescription(ans);
+      await updateDoc(doc(db,"chats",chat,"calls","current"),{answer:{type:ans.type,sdp:ans.sdp}});
+    }catch(err){ console.error(err); }
+  },fail("Paylaşım dinleme"));
+}
+function closeViewer(){
+  if(!viewer) return;
+  const v=viewer; viewer=null;
+  v.pc.close(); v.unsubs.forEach(u=>u());
+  $("scVid").srcObject=null; $("screen").classList.add("hide");
+}
+
+// ---------- Tema ----------
+const SWATCH=["#0095f6","#8e5cf5","#10b981","#f43f5e","#f59e0b","#ec4899"];
+const prefs=()=>JSON.parse(localStorage.getItem("kisir_theme")||"{}");
+function applyTheme(){
+  const p=prefs();
+  document.documentElement.style.setProperty("--acc",p.acc||"#0095f6");
+  document.body.classList.toggle("light",!!p.light);
+}
+function savePrefs(x){ localStorage.setItem("kisir_theme",JSON.stringify({...prefs(),...x})); applyTheme(); }
+SWATCH.forEach(col=>{
+  const b=document.createElement("button");
+  b.className="sw"; b.style.background=col;
+  b.onclick=()=>savePrefs({acc:col});
+  $("swatches").appendChild(b);
+});
+$("bSet").onclick=()=>{ $("lightT").checked=!!prefs().light; $("setModal").classList.remove("hide"); };
+$("setX").onclick=()=>$("setModal").classList.add("hide");
+$("setModal").onclick=e=>{ if(e.target.id==="setModal") $("setModal").classList.add("hide"); };
+$("lightT").onchange=e=>savePrefs({light:e.target.checked});
+applyTheme();
+</script>
+</body>
+</html>
