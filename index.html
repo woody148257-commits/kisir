@@ -178,19 +178,24 @@ let mState=null, typ={}, typingAt=0, share=null, viewer=null;
 const au=new Audio();
 
 // ---------- Giriş (hesap yok, ID ile) ----------
-const saved=JSON.parse(localStorage.getItem("kisir_me")||"null");
-if(saved){
+const KEY="kisir_v3";
+let saved=null;
+try{ saved=JSON.parse(localStorage.getItem(KEY)||"null"); }catch{ saved=null; }
+if(saved&&typeof saved.id==="string"&&typeof saved.name==="string"&&saved.name&&saved.id){
   me=saved; uid=saved.id;
-  setDoc(doc(db,"users",uid),{name:me.name},{merge:true}).catch(()=>{});
+  setDoc(doc(db,"users",uid),{name:String(me.name)},{merge:true}).catch(err=>console.error(err));
   start();
-} else $("login").classList.remove("hide");
+} else {
+  localStorage.removeItem(KEY);
+  $("login").classList.remove("hide");
+}
 
 async function doLogin(){
   const n=$("nick").value.trim(); if(!n) return toast("Bir ad yazın");
   me={id:newId(),name:n}; uid=me.id;
   try{
     await setDoc(doc(db,"users",uid),{name:n});
-    localStorage.setItem("kisir_me",JSON.stringify(me));
+    localStorage.setItem(KEY,JSON.stringify(me));
     $("login").classList.add("hide"); start();
   }catch(err){ fail("Giriş")(err); }
 }
